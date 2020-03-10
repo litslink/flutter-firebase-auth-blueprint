@@ -1,3 +1,28 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(null);
+import 'features/auth/auth_widget.dart';
+import 'features/profile/profile_widget.dart';
+import 'features/splash/splash_widget.dart';
+import 'providers.dart';
+
+void main() => runApp(App());
+
+class App extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: providers,
+      child: MaterialApp(
+        initialRoute: SplashWidget.route,
+        routes: {
+          SplashWidget.route: (_) => SplashWidget(),
+          AuthWidget.route: (_) => AuthWidget(),
+          ProfileWidget.route: (_) => ProfileWidget()
+        },
+      ),
+    );
+  }
+}
