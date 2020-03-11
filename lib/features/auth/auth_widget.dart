@@ -112,43 +112,26 @@ class _AuthWidgetState extends State<AuthWidget> {
               controller: _passwordController,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)
-                    ),
-                    color: Colors.blue,
-                    child: Text('Sign in',
-                        style: TextStyle(fontSize: 16, color: Colors.white)
-                    ),
-                    onPressed: () {
-                      if (_signInFormKey.currentState.validate()) {
-                        final event = SignIn(
-                            _emailController.text,
-                            _passwordController.text
-                        );
-                        BlocProvider.of<AuthBloc>(context).add(event);
-                      }
-                    },
-                  ),
-                ),
-              ],
+          _buildPrimaryButton(
+            content: Text('Sign in',
+                style: TextStyle(fontSize: 16, color: Colors.white)
             ),
+            onPressed: () {
+              if (_signInFormKey.currentState.validate()) {
+                final event = SignIn(
+                    _emailController.text,
+                    _passwordController.text
+                );
+                BlocProvider.of<AuthBloc>(context).add(event);
+              }
+            }
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _type = _AuthType.signUp;
-              });
-            },
-            child: Text('or create an account',
-                style: TextStyle(fontSize: 16, color: Colors.black38)
-            ),
-          )
+          _buildGoogleSignInButton(context),
+          _buildClickableText('or create an account', () {
+            setState(() {
+              _type = _AuthType.signUp;
+            });
+          })
         ],
       ),
     );
@@ -216,44 +199,96 @@ class _AuthWidgetState extends State<AuthWidget> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)
-                    ),
-                    color: Colors.blue,
-                    child: Text('Create account',
-                        style: TextStyle(fontSize: 16, color: Colors.white)
-                    ),
-                    onPressed: () {
-                      if (_signUpFormKey.currentState.validate()) {
-                        final event = SignUp(
-                            _emailController.text,
-                            _passwordController.text
-                        );
-                        BlocProvider.of<AuthBloc>(context).add(event);
-                      }
-                    },
+          _buildPrimaryButton(
+              content: Text('Create account',
+                  style: TextStyle(fontSize: 16, color: Colors.white)
+              ),
+              onPressed: () {
+                if (_signUpFormKey.currentState.validate()) {
+                  final event = SignUp(
+                      _emailController.text,
+                      _passwordController.text
+                  );
+                  BlocProvider.of<AuthBloc>(context).add(event);
+                }
+              }
+          ),
+          _buildGoogleSignInButton(context),
+          _buildClickableText('or sign in', () {
+            setState(() {
+              _type = _AuthType.signIn;
+            });
+          })
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGoogleSignInButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 4),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)
+              ),
+              color: Colors.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.search, color: Colors.white,),
+                  Text('Sign in with google',
+                      style: TextStyle(fontSize: 16, color: Colors.white)
                   ),
-                ),
-              ],
+                ],
+              ),
+              onPressed: () {
+                final event = SignInWithGoogle();
+                BlocProvider.of<AuthBloc>(context).add(event);
+              },
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _type = _AuthType.signIn;
-              });
-            },
-            child: Text('or sign in',
-                style: TextStyle(fontSize: 16, color: Colors.black38)
-            ),
-          )
         ],
+      ),
+    );
+  }
+
+  Widget _buildPrimaryButton({Widget content, Function onPressed}) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)
+              ),
+              color: Colors.blue,
+              child: Text('Create account',
+                  style: TextStyle(fontSize: 16, color: Colors.white)
+              ),
+              onPressed: () {
+                if (_signUpFormKey.currentState.validate()) {
+                  final event = SignUp(
+                      _emailController.text,
+                      _passwordController.text
+                  );
+                  BlocProvider.of<AuthBloc>(context).add(event);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClickableText(String text, Function onTap) {
+    return GestureDetector(
+      onTap: () => onTap,
+      child: Text(text, style: TextStyle(fontSize: 16, color: Colors.black38)
       ),
     );
   }
