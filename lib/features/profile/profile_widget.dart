@@ -47,14 +47,84 @@ class ProfileWidget extends StatelessWidget {
   Widget _buildProfileInfo(BuildContext context, User user) {
     return ListView(
       children: <Widget>[
-        Text(user.toString()),
-        RaisedButton(
-          child: Text('Logout'),
-          onPressed: () {
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: _buildAvatar(user),
+            )
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(user.displayName,
+                style: TextStyle(fontSize: 24),
+              ),
+            )
+          ],
+        ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Email',
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        )
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(user.email,
+                          style: TextStyle(fontSize: 14, color: Colors.black38),
+                        )
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
             BlocProvider.of<ProfileBloc>(context).add(SignOut());
           },
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('Logout',
+              style: TextStyle(fontSize: 20, color: Colors.black38),
+            ),
+          ),
         )
       ],
     );
+  }
+
+  Widget _buildAvatar(User user) {
+    if (user.photoUrl != null) {
+      return CircleAvatar(
+        backgroundImage: NetworkImage(user.photoUrl), radius: 50,
+      );
+    } else {
+      return CircleAvatar(
+        child: Text(
+            user.displayName.isNotEmpty
+                ? user.displayName[0]
+                : user.email[0]
+        ),
+        radius: 50,
+      );
+    }
   }
 }
