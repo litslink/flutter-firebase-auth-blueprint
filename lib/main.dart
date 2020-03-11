@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'features/auth/auth_widget.dart';
+import 'features/auth/phone/phone_verification_widget.dart';
 import 'features/profile/profile_widget.dart';
 import 'features/splash/splash_widget.dart';
 import 'providers.dart';
@@ -20,7 +21,8 @@ class App extends StatelessWidget {
         routes: {
           SplashWidget.route: (_) => SplashWidget(),
           AuthWidget.route: (_) => AuthWidget(),
-          ProfileWidget.route: (_) => ProfileWidget()
+          ProfileWidget.route: (_) => ProfileWidget(),
+          PhoneVerificationWidget.route: (_) => PhoneVerificationWidget()
         },
       ),
     );
