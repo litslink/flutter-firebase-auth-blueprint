@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../model/user.dart';
@@ -27,6 +29,31 @@ class AuthRepository {
     await auth.signInWithCredential(credential);
   }
 
+  Future<String> requestPhoneVerification(
+      String phoneNumber,
+      [Duration timeout = const Duration(seconds: 60)]) async {
+    final verificationIdCompleter = Completer<String>();
+    await auth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: null,
+        verificationFailed: verificationIdCompleter.completeError,
+        codeSent: (verificationId, [_]) {
+          verificationIdCompleter.complete(verificationId);
+        },
+        codeAutoRetrievalTimeout: null
+    );
+    return verificationIdCompleter.future;
+  }
+  
+  Future<void> signInWithPhone(String verificationId, String smsCode) async {
+    final credential = PhoneAuthProvider.getCredential(
+        verificationId: verificationId,
+        smsCode: smsCode
+    );
+    await auth.signInWithCredential(credential);
+  }
+
   Future<void> signOut() async {
     await auth.signOut();
     await googleSignIn.signOut();
@@ -37,7 +64,8 @@ class AuthRepository {
     return networkModel != null ? User(
       networkModel.email,
       networkModel.displayName,
-      networkModel.photoUrl
+      networkModel.photoUrl,
+      networkModel.phoneNumber
     ) : null;
   }
 }

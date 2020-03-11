@@ -30,6 +30,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepository.signInWithGoogle();
       final currentUser = await authRepository.getUser();
       yield AuthSuccessful(currentUser.displayName);
+    } else if (event is RequestPhoneVerification) {
+      yield Loading();
+      final verificationId = await authRepository
+          .requestPhoneVerification(event.phoneNumber);
+      yield PhoneVerificationStarted(verificationId);
+    } else if (event is SignInWithPhone) {
+      yield Loading();
+      await authRepository.signInWithPhone(
+          event.verificationId,
+          event.smsCode
+      );
+      final currentUser = await authRepository.getUser();
+      yield AuthSuccessful(currentUser.displayName);
     }
   }
 }

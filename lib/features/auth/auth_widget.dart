@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_input_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_verification_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../repository/auth_repository.dart';
@@ -76,7 +78,6 @@ class _AuthWidgetState extends State<AuthWidget> {
       key: _signInFormKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
@@ -126,7 +127,7 @@ class _AuthWidgetState extends State<AuthWidget> {
               }
             }
           ),
-          _buildGoogleSignInButton(context),
+          _buildAdditionSignInMethod(context),
           _buildClickableText('or create an account', () {
             setState(() {
               _type = _AuthType.signUp;
@@ -213,7 +214,7 @@ class _AuthWidgetState extends State<AuthWidget> {
                 }
               }
           ),
-          _buildGoogleSignInButton(context),
+          _buildAdditionSignInMethod(context),
           _buildClickableText('or sign in', () {
             setState(() {
               _type = _AuthType.signIn;
@@ -224,34 +225,52 @@ class _AuthWidgetState extends State<AuthWidget> {
     );
   }
 
-  Widget _buildGoogleSignInButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 4),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)
-              ),
-              color: Colors.red,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.search, color: Colors.white,),
-                  Text('Sign in with google',
-                      style: TextStyle(fontSize: 16, color: Colors.white)
-                  ),
-                ],
-              ),
-              onPressed: () {
-                final event = SignInWithGoogle();
-                BlocProvider.of<AuthBloc>(context).add(event);
-              },
+  Widget _buildAdditionSignInMethod(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        GestureDetector(
+          onTap: () {
+            final event = SignInWithGoogle();
+            BlocProvider.of<AuthBloc>(context).add(event);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+                width: 40,
+                height: 40,
+                child: Image.network('https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png')
             ),
           ),
-        ],
-      ),
+        ),
+        GestureDetector(
+          onTap: () {
+
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+                width: 40,
+                height: 40,
+                child: Image.network('https://image.flaticon.com/icons/png/512/124/124010.png')
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed(PhoneVerificationWidget.route);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+                width: 40,
+                height: 40,
+                child: Icon(Icons.phone_android, size: 40,)
+            ),
+          ),
+        )
+      ],
     );
   }
 

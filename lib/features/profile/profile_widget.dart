@@ -31,7 +31,7 @@ class ProfileWidget extends StatelessWidget {
             Navigator.of(context).popAndPushNamed(AuthWidget.route);
           }
         },
-        buildWhen: (_, state) => !(state is AuthenticationRequired),
+        buildWhen: (_, state) => state is Loading || state is ProfileInfo,
         // ignore: missing_return
         builder: (context, state) {
           if (state is Loading) {
@@ -61,7 +61,7 @@ class ProfileWidget extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(user.displayName,
+              child: Text(user.displayName ?? 'Unknown',
                 style: TextStyle(fontSize: 24),
               ),
             )
@@ -86,7 +86,36 @@ class ProfileWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(8),
                     child: Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(user.email,
+                        child: Text(user.email ?? 'Unknown',
+                          style: TextStyle(fontSize: 14, color: Colors.black38),
+                        )
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Phone number',
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        )
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(user.phoneNumber ?? 'Unknown',
                           style: TextStyle(fontSize: 14, color: Colors.black38),
                         )
                     ),
@@ -118,13 +147,19 @@ class ProfileWidget extends StatelessWidget {
       );
     } else {
       return CircleAvatar(
-        child: Text(
-            user.displayName.isNotEmpty
-                ? user.displayName[0]
-                : user.email[0]
-        ),
+        child: Text(provideInitial(user)),
         radius: 50,
       );
+    }
+  }
+
+  String provideInitial(User user) {
+    if (user.displayName != null && user.displayName.isNotEmpty) {
+      return user.displayName[0];
+    } else if (user.email != null && user.email.isNotEmpty) {
+      return user.email[0];
+    } else {
+      return '';
     }
   }
 }

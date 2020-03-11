@@ -15,3 +15,16 @@ class SignUp extends AuthEvent {
 }
 
 class SignInWithGoogle extends AuthEvent {}
+
+class RequestPhoneVerification extends AuthEvent {
+  final String phoneNumber;
+
+  RequestPhoneVerification(this.phoneNumber);
+}
+
+class SignInWithPhone extends AuthEvent {
+  final String verificationId;
+  final String smsCode;
+
+  SignInWithPhone(this.verificationId, this.smsCode);
+}
