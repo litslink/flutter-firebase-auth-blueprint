@@ -10,15 +10,38 @@ import 'auth_bloc.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
-class AuthWidget extends StatelessWidget {
+enum _AuthType { signIn, signUp }
+
+class AuthWidget extends StatefulWidget {
 
   static final String route = '/auth';
+
+  @override
+  State createState() => _AuthWidgetState();
+}
+
+class _AuthWidgetState extends State<AuthWidget> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  final _signInFormKey = GlobalKey<FormState>();
+  final _signUpFormKey = GlobalKey<FormState>();
+
+  _AuthType _type = _AuthType.signIn;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildSingInScreen(context),
     );
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
   }
 
   Widget _buildSingInScreen(BuildContext context) {
@@ -37,85 +60,201 @@ class AuthWidget extends StatelessWidget {
           if (state is Loading) {
             return Center(child: CircularProgressIndicator());
           } else if (state is AuthRequired) {
-            return _buildSignInControl(context);
+            if (_type == _AuthType.signIn) {
+              return _buildSignInForm(context);
+            } else if (_type == _AuthType.signUp) {
+              return _buildSignUpForm(context);
+            }
           }
         },
       ),
     );
   }
 
-  Widget _buildSignInControl(BuildContext context) {
-    String email;
-    String password;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: _buildEmailInput((value) {
-            email = value;
-          }),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-          child: _buildPasswordInput((value) {
-            password = value;
-          }),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  color: Colors.blue,
-                  child: Text('Sign in',
-                      style: TextStyle(fontSize: 16, color: Colors.white)),
-                  onPressed: () {
-                    final event = SignUp(email, password);
-                    BlocProvider.of<AuthBloc>(context).add(event);
-                  },
-                ),
-              ),
-            ],
+  Widget _buildSignInForm(BuildContext context) {
+    return Form(
+      key: _signInFormKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: TextFormField(
+              maxLines: 1,
+              keyboardType: TextInputType.emailAddress,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Email',
+                  icon: Icon(
+                    Icons.mail,
+                    color: Colors.grey,
+                  )),
+              validator: (value) => value.isEmpty
+                  ? 'Email can\'t be empty' : null,
+              controller: _emailController,
+            ),
           ),
-        ),
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+            child: TextFormField(
+              maxLines: 1,
+              obscureText: true,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.grey,
+                  )),
+              validator: (value) => value.isEmpty
+                  ? 'Password can\'t be empty' : null,
+              controller: _passwordController,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)
+                    ),
+                    color: Colors.blue,
+                    child: Text('Sign in',
+                        style: TextStyle(fontSize: 16, color: Colors.white)
+                    ),
+                    onPressed: () {
+                      if (_signInFormKey.currentState.validate()) {
+                        final event = SignIn(
+                            _emailController.text,
+                            _passwordController.text
+                        );
+                        BlocProvider.of<AuthBloc>(context).add(event);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _type = _AuthType.signUp;
+              });
+            },
+            child: Text('or create an account',
+                style: TextStyle(fontSize: 16, color: Colors.black38)
+            ),
+          )
+        ],
+      ),
     );
   }
 
-  Widget _buildEmailInput(Function(String) valueChangeListener) {
-    return TextFormField(
-      maxLines: 1,
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      decoration: InputDecoration(
-          hintText: 'Email',
-          icon: Icon(
-            Icons.mail,
-            color: Colors.grey,
-          )),
-      validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
-      onChanged: (value) => valueChangeListener(value.trim()),
-    );
-  }
-
-  Widget _buildPasswordInput(Function(String) valueChangeListener) {
-    return TextFormField(
-      maxLines: 1,
-      obscureText: true,
-      autofocus: false,
-      decoration: InputDecoration(
-          hintText: 'Password',
-          icon: Icon(
-            Icons.lock,
-            color: Colors.grey,
-          )),
-      validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-      onChanged: (value) => valueChangeListener(value.trim()),
+  Widget _buildSignUpForm(BuildContext context) {
+    return Form(
+      key: _signUpFormKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: TextFormField(
+              maxLines: 1,
+              keyboardType: TextInputType.emailAddress,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Email',
+                  icon: Icon(
+                    Icons.mail,
+                    color: Colors.grey,
+                  )),
+              validator: (value) => value.isEmpty
+                  ? 'Email can\'t be empty' : null,
+              controller: _emailController,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+            child: TextFormField(
+              maxLines: 1,
+              obscureText: true,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.grey,
+                  )),
+              validator: (value) => value.isEmpty
+                  ? 'Password can\'t be empty' : null,
+              controller: _passwordController,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+            child: TextFormField(
+              maxLines: 1,
+              obscureText: true,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Confirm password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.grey,
+                  )),
+              validator: (value) {
+                if (value.isEmpty || value != _passwordController.text) {
+                  return 'Passwords do not match';
+                } else {
+                  return null;
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)
+                    ),
+                    color: Colors.blue,
+                    child: Text('Create account',
+                        style: TextStyle(fontSize: 16, color: Colors.white)
+                    ),
+                    onPressed: () {
+                      if (_signUpFormKey.currentState.validate()) {
+                        final event = SignUp(
+                            _emailController.text,
+                            _passwordController.text
+                        );
+                        BlocProvider.of<AuthBloc>(context).add(event);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _type = _AuthType.signIn;
+              });
+            },
+            child: Text('or sign in',
+                style: TextStyle(fontSize: 16, color: Colors.black38)
+            ),
+          )
+        ],
+      ),
     );
   }
 }
