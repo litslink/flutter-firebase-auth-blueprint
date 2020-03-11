@@ -20,6 +20,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await authRepository.signUp(event.email, event.password);
       final currentUser = await authRepository.getUser();
       yield AuthSuccessful(currentUser.displayName);
+    } else if (event is SignIn) {
+      yield Loading();
+      await authRepository.signIn(event.email, event.password);
+      final currentUser = await authRepository.getUser();
+      yield AuthSuccessful(currentUser.displayName);
     }
   }
 }
