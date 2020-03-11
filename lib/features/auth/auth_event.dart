@@ -13,3 +13,5 @@ class SignUp extends AuthEvent {
 
   SignUp(this.email, this.password);
 }
+
+class SignInWithGoogle extends AuthEvent {}
