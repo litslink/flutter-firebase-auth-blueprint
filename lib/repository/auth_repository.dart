@@ -54,6 +54,10 @@ class AuthRepository {
     await auth.signInWithCredential(credential);
   }
 
+  Future<void> sendPasswordResetEmail(String email) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
+
   Future<void> signOut() async {
     await auth.signOut();
     await googleSignIn.signOut();

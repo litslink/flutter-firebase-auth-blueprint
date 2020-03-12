@@ -28,3 +28,9 @@ class SignInWithPhone extends AuthEvent {
 
   SignInWithPhone(this.verificationId, this.smsCode);
 }
+
+class ResetPassword extends AuthEvent {
+  final String email;
+
+  ResetPassword(this.email);
+}

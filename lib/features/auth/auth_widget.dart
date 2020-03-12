@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/password_reset/password_reset_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_input_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_verification_widget.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,6 @@ class _AuthWidgetState extends State<AuthWidget> {
       body: _buildSingInScreen(context),
     );
   }
-
 
   @override
   void dispose() {
@@ -132,7 +132,13 @@ class _AuthWidgetState extends State<AuthWidget> {
             setState(() {
               _type = _AuthType.signUp;
             });
-          })
+          }),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _buildClickableText('Forgot your password?', () {
+              Navigator.of(context).pushNamed(PasswordResetWidget.route);
+            }),
+          )
         ],
       ),
     );
@@ -285,18 +291,8 @@ class _AuthWidgetState extends State<AuthWidget> {
                   borderRadius: BorderRadius.circular(30.0)
               ),
               color: Colors.blue,
-              child: Text('Create account',
-                  style: TextStyle(fontSize: 16, color: Colors.white)
-              ),
-              onPressed: () {
-                if (_signUpFormKey.currentState.validate()) {
-                  final event = SignUp(
-                      _emailController.text,
-                      _passwordController.text
-                  );
-                  BlocProvider.of<AuthBloc>(context).add(event);
-                }
-              },
+              child: content,
+              onPressed: () => onPressed(),
             ),
           ),
         ],
@@ -306,7 +302,7 @@ class _AuthWidgetState extends State<AuthWidget> {
 
   Widget _buildClickableText(String text, Function onTap) {
     return GestureDetector(
-      onTap: () => onTap,
+      onTap: () => onTap(),
       child: Text(text, style: TextStyle(fontSize: 16, color: Colors.black38)
       ),
     );

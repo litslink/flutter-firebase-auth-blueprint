@@ -43,6 +43,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       final currentUser = await authRepository.getUser();
       yield AuthSuccessful(currentUser.displayName);
+    } else if (event is ResetPassword) {
+      yield Loading();
+      await authRepository.sendPasswordResetEmail(event.email);
+      yield PasswordResetStarted();
     }
   }
 }
