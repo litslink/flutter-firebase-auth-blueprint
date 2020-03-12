@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/home_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../repository/auth_repository.dart';
@@ -28,7 +29,7 @@ class SplashWidget extends StatelessWidget {
       child: BlocListener<SplashBloc, SplashState>(
         listener: (_, state) {
           if (state is Authenticated) {
-            Navigator.of(context).popAndPushNamed(ProfileWidget.route);
+            Navigator.of(context).popAndPushNamed(HomeWidget.route);
           } else if (state is AuthenticationRequired) {
             Navigator.of(context).popAndPushNamed(AuthWidget.route);
           }
