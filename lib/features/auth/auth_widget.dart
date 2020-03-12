@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/password_reset/password_reset_widget.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_input_widget.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_verification_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../repository/auth_repository.dart';
-import '../profile/profile_widget.dart';
-
+import '../home/home_widget.dart';
 import 'auth_bloc.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
+import 'password_reset/password_reset_widget.dart';
+import 'phone/phone_verification_widget.dart';
 
 enum _AuthType { signIn, signUp }
 
@@ -53,7 +51,7 @@ class _AuthWidgetState extends State<AuthWidget> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (_, state) {
           if (state is AuthSuccessful) {
-            Navigator.of(context).popAndPushNamed(ProfileWidget.route);
+            Navigator.of(context).popAndPushNamed(HomeWidget.route);
           }
         },
         buildWhen: (_, state) => !(state is AuthSuccessful),
@@ -128,16 +126,26 @@ class _AuthWidgetState extends State<AuthWidget> {
             }
           ),
           _buildAdditionSignInMethod(context),
-          _buildClickableText('or create an account', () {
-            setState(() {
-              _type = _AuthType.signUp;
-            });
-          }),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _type = _AuthType.signUp;
+              });
+            },
+            child: Text('or create an account',
+                style: TextStyle(fontSize: 16, color: Colors.blue)
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: _buildClickableText('Forgot your password?', () {
-              Navigator.of(context).pushNamed(PasswordResetWidget.route);
-            }),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pushNamed(PasswordResetWidget.route);
+              },
+              child:Text('Forgot your password?',
+                  style: TextStyle(fontSize: 14, color: Colors.black38)
+              ),
+            )
           )
         ],
       ),
@@ -221,11 +229,16 @@ class _AuthWidgetState extends State<AuthWidget> {
               }
           ),
           _buildAdditionSignInMethod(context),
-          _buildClickableText('or sign in', () {
-            setState(() {
-              _type = _AuthType.signIn;
-            });
-          })
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _type = _AuthType.signIn;
+              });
+            },
+            child: Text('or sign in',
+                style: TextStyle(fontSize: 16, color: Colors.blue)
+            ),
+          )
         ],
       ),
     );
@@ -296,14 +309,6 @@ class _AuthWidgetState extends State<AuthWidget> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildClickableText(String text, Function onTap) {
-    return GestureDetector(
-      onTap: () => onTap(),
-      child: Text(text, style: TextStyle(fontSize: 16, color: Colors.black38)
       ),
     );
   }

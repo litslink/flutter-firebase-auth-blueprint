@@ -16,12 +16,6 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildProfileScreen(context),
-    );
-  }
-
-  Widget _buildProfileScreen(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
     return BlocProvider(
       create: (_) => ProfileBloc(authRepository)..add(FetchProfileInfo()),
@@ -129,10 +123,12 @@ class ProfileWidget extends StatelessWidget {
           onTap: () {
             BlocProvider.of<ProfileBloc>(context).add(SignOut());
           },
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text('Logout',
-              style: TextStyle(fontSize: 20, color: Colors.black38),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Logout',
+                style: TextStyle(fontSize: 18, color: Colors.redAccent),
+              ),
             ),
           ),
         )
