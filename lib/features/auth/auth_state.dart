@@ -10,6 +10,8 @@ class PhoneVerificationStarted extends AuthState {
   PhoneVerificationStarted(this.verificationId);
 }
 
+class PasswordResetStarted extends AuthState {}
+
 class AuthSuccessful extends AuthState {
   final String name;
 
