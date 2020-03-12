@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/user.dart';
@@ -17,23 +18,47 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
-    return BlocProvider(
-      create: (_) => ProfileBloc(authRepository)..add(FetchProfileInfo()),
-      child: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (_, state) {
-          if (state is AuthenticationRequired) {
-            Navigator.of(context).popAndPushNamed(AuthWidget.route);
-          }
-        },
-        buildWhen: (_, state) => state is Loading || state is ProfileInfo,
-        // ignore: missing_return
-        builder: (context, state) {
-          if (state is Loading) {
-            return Center(child: CircularProgressIndicator(),);
-          } else if (state is ProfileInfo) {
-            return _buildProfileInfo(context, state.user);
-          }
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile',
+          style: TextStyle(fontSize: 18, color: Colors.black),
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(EditProfileWidget.route);
+            },
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text('Edit',
+                  style: TextStyle(fontSize: 16, color: Colors.blue),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+      body: BlocProvider(
+        create: (_) => ProfileBloc(authRepository)..add(FetchProfileInfo()),
+        child: BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (_, state) {
+            if (state is AuthenticationRequired) {
+              Navigator.of(context).popAndPushNamed(AuthWidget.route);
+            }
+          },
+          buildWhen: (_, state) => state is Loading || state is ProfileInfo,
+          // ignore: missing_return
+          builder: (context, state) {
+            if (state is Loading) {
+              return Center(child: CircularProgressIndicator(),);
+            } else if (state is ProfileInfo) {
+              return _buildProfileInfo(context, state.user);
+            }
+          },
+        ),
       ),
     );
   }

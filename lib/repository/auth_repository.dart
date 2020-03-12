@@ -11,8 +11,12 @@ class AuthRepository {
 
   AuthRepository(this.auth, this.googleSignIn);
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(String name, String email, String password) async {
     await auth.createUserWithEmailAndPassword(email: email, password: password);
+
+    final info = UserUpdateInfo()
+      ..displayName = name;
+    await (await auth.currentUser()).updateProfile(info);
   }
 
   Future<void> signIn(String email, String password) async {
