@@ -5,11 +5,12 @@ class User extends Equatable {
   final String displayName;
   final String photoUrl;
   final String phoneNumber;
+  final String id;
 
-  User(this.email, this.displayName, this.photoUrl, this.phoneNumber);
+  User(this.email, this.displayName, this.photoUrl, this.phoneNumber, this.id);
 
   @override
-  List<Object> get props => [email, displayName, photoUrl, phoneNumber];
+  List<Object> get props => [email, displayName, photoUrl, phoneNumber, id];
 
   User copyWith({
     String displayName,
@@ -18,6 +19,7 @@ class User extends Equatable {
       email,
       displayName ?? this.displayName,
       photoUrl ?? this.photoUrl,
-      phoneNumber
+      phoneNumber,
+      id
   );
 }

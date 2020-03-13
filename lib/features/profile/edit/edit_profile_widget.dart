@@ -1,23 +1,36 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../model/user.dart';
-import '../../../repository/auth_repository.dart';
+import '../../../data/model/user.dart';
+import '../../../data/repository/auth_repository.dart';
+import '../../../data/util/image_manager.dart';
 import 'edit_profile_bloc.dart';
 import 'edit_profile_event.dart';
 import 'edit_profile_state.dart';
 
-class EditProfileWidget extends StatelessWidget {
+class EditProfileWidget extends StatefulWidget {
   static final String route = '/edit_profile';
+
+  @override
+  State createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfileWidget> {
+
+  File _pickedPhoto;
 
   @override
   Widget build(BuildContext context) {
     final user = ModalRoute.of(context).settings.arguments as User;
     final authRepository = Provider.of<AuthRepository>(context);
+    final imageLoader = Provider.of<ImageManager>(context);
     return BlocProvider(
-      create: (_) => EditProfileBloc(user, authRepository),
+      create: (_) => EditProfileBloc(user, authRepository, imageLoader),
       child: BlocConsumer<EditProfileBloc, EditProfileState>(
         listener: (_, state) {
           if (state is EditCompleted) {
@@ -51,8 +64,14 @@ class EditProfileWidget extends StatelessWidget {
           child: Row(
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-
+                onTap: () async {
+                  final result = await ImagePicker
+                      .pickImage(source: ImageSource.gallery);
+                  final event = PhotoChanged(result);
+                  BlocProvider.of<EditProfileBloc>(context).add(event);
+                  setState(() {
+                    _pickedPhoto = result;
+                  });
                 },
                 child: _buildPhotoPicker(context, user.photoUrl),
               ),
@@ -84,9 +103,23 @@ class EditProfileWidget extends StatelessWidget {
   }
 
   Widget _buildPhotoPicker(BuildContext context, String photoUrl) {
-    final avatar = photoUrl != null
-        ? CircleAvatar(backgroundImage: NetworkImage(photoUrl), radius: 35)
-        : CircleAvatar(backgroundColor: Colors.blue,);
+    Widget avatar;
+    if (_pickedPhoto != null) {
+      avatar = CircleAvatar(
+        backgroundImage: FileImage(_pickedPhoto),
+        radius: 35,
+      );
+    } else if (photoUrl != null) {
+      avatar = CircleAvatar(
+          backgroundImage: NetworkImage(photoUrl),
+          radius: 35,
+      );
+    } else {
+      avatar = CircleAvatar(
+        backgroundColor: Colors.blue,
+        radius: 35,
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Stack(
@@ -107,16 +140,13 @@ class EditProfileWidget extends StatelessWidget {
       iconTheme: IconThemeData(color: Colors.black),
       backgroundColor: Colors.white,
       actions: <Widget>[
-        GestureDetector(
-          onTap: () {
+        FlatButton(
+          onPressed: () {
             BlocProvider.of<EditProfileBloc>(context).add(ConfirmChanges());
           },
           child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('Done',
-                style: TextStyle(fontSize: 16, color: Colors.blue),
-              ),
+            child: Text('Done',
+              style: TextStyle(fontSize: 16, color: Colors.blue),
             ),
           ),
         )

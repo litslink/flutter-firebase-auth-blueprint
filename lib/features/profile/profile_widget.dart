@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/user.dart';
-import '../../repository/auth_repository.dart';
+import '../../data/model/user.dart';
+import '../../data/repository/auth_repository.dart';
 import '../auth/auth_widget.dart';
 import 'profile_bloc.dart';
 import 'profile_event.dart';
@@ -31,16 +31,26 @@ class ProfileWidget extends StatelessWidget {
             BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 if (state is ProfileInfo) {
-                  return GestureDetector(
-                    onTap: () async {
+                  return FlatButton(
+                    onPressed: () async {
                       final result = await Navigator.of(context).pushNamed(
                           EditProfileWidget.route,
                           arguments: state.user
                       ) as bool;
-                      if (result) {
+                      if (result != null && result) {
                         BlocProvider.of<ProfileBloc>(context)
                             .add(FetchProfileInfo());
                       }
+                    },
+                    child: Center(
+                      child: Text('Edit',
+                        style: TextStyle(fontSize: 16, color: Colors.blue),
+                      ),
+                    ),
+                  );
+                  return GestureDetector(
+                    onTap: () async {
+
                     },
                     child: Center(
                       child: Padding(

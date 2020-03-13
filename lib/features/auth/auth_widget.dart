@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../repository/auth_repository.dart';
+import '../../data/repository/auth_repository.dart';
 import '../home/home_widget.dart';
 import 'auth_bloc.dart';
 import 'auth_event.dart';

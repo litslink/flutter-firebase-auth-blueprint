@@ -91,10 +91,11 @@ class AuthRepository {
   Future<User> getUser() async {
     final networkModel = await auth.currentUser();
     return networkModel != null ? User(
-      networkModel.email,
-      networkModel.displayName,
-      networkModel.photoUrl,
-      networkModel.phoneNumber
+        networkModel.email,
+        networkModel.displayName,
+        networkModel.photoUrl,
+        networkModel.phoneNumber,
+        networkModel.uid
     ) : null;
   }
 }

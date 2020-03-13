@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_auth_blueprint/features/home/home_widget.dart';
 import 'package:provider/provider.dart';
 
-import '../../repository/auth_repository.dart';
+import '../../data/repository/auth_repository.dart';
 import '../auth/auth_widget.dart';
 import '../profile/profile_widget.dart';
 import 'splash_bloc.dart';
