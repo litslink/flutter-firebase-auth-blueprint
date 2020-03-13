@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'features/auth/auth_widget.dart';
@@ -26,7 +27,8 @@ class App extends StatelessWidget {
           AuthWidget.route: (_) => AuthWidget(),
           ProfileWidget.route: (_) => ProfileWidget(),
           PhoneVerificationWidget.route: (_) => PhoneVerificationWidget(),
-          PasswordResetWidget.route: (_) => PasswordResetWidget()
+          PasswordResetWidget.route: (_) => PasswordResetWidget(),
+          EditProfileWidget.route: (_) => EditProfileWidget()
         },
       ),
     );

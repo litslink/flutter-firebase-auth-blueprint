@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../repository/auth_repository.dart';
+import '../../data/repository/auth_repository.dart';
 import '../home/home_widget.dart';
 import 'auth_bloc.dart';
 import 'auth_event.dart';
@@ -22,6 +22,7 @@ class AuthWidget extends StatefulWidget {
 }
 
 class _AuthWidgetState extends State<AuthWidget> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -40,6 +41,7 @@ class _AuthWidgetState extends State<AuthWidget> {
   @override
   void dispose() {
     super.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
   }
@@ -163,6 +165,23 @@ class _AuthWidgetState extends State<AuthWidget> {
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: TextFormField(
               maxLines: 1,
+              keyboardType: TextInputType.text,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Name',
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                  )),
+              validator: (value) => value.isEmpty
+                  ? 'Name can\'t be empty' : null,
+              controller: _nameController,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: TextFormField(
+              maxLines: 1,
               keyboardType: TextInputType.emailAddress,
               autofocus: false,
               decoration: InputDecoration(
@@ -221,6 +240,7 @@ class _AuthWidgetState extends State<AuthWidget> {
               onPressed: () {
                 if (_signUpFormKey.currentState.validate()) {
                   final event = SignUp(
+                      _nameController.text,
                       _emailController.text,
                       _passwordController.text
                   );
@@ -228,7 +248,6 @@ class _AuthWidgetState extends State<AuthWidget> {
                 }
               }
           ),
-          _buildAdditionSignInMethod(context),
           GestureDetector(
             onTap: () {
               setState(() {

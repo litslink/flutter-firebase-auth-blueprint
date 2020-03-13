@@ -11,8 +11,9 @@ class AuthRepository {
 
   AuthRepository(this.auth, this.googleSignIn);
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(String name, String email, String password) async {
     await auth.createUserWithEmailAndPassword(email: email, password: password);
+    await updateUserName(name);
   }
 
   Future<void> signIn(String email, String password) async {
@@ -58,6 +59,30 @@ class AuthRepository {
     await auth.sendPasswordResetEmail(email: email);
   }
 
+  Future<bool> updateUserName(String name) async {
+    final currentUser = await auth.currentUser();
+    if (currentUser.displayName != name) {
+      final info = UserUpdateInfo()
+        ..displayName = name;
+      await currentUser.updateProfile(info);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> updatePhotoUrl(String photoUrl) async {
+    final currentUser = await auth.currentUser();
+    if (currentUser.photoUrl != photoUrl) {
+      final info = UserUpdateInfo()
+        ..photoUrl = photoUrl;
+      await currentUser.updateProfile(info);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<void> signOut() async {
     await auth.signOut();
     await googleSignIn.signOut();
@@ -66,10 +91,11 @@ class AuthRepository {
   Future<User> getUser() async {
     final networkModel = await auth.currentUser();
     return networkModel != null ? User(
-      networkModel.email,
-      networkModel.displayName,
-      networkModel.photoUrl,
-      networkModel.phoneNumber
+        networkModel.email,
+        networkModel.displayName,
+        networkModel.photoUrl,
+        networkModel.phoneNumber,
+        networkModel.uid
     ) : null;
   }
 }

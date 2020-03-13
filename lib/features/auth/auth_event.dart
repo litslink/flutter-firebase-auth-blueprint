@@ -8,10 +8,11 @@ class SignIn extends AuthEvent {
 }
 
 class SignUp extends AuthEvent {
+  final String name;
   final String email;
   final String password;
 
-  SignUp(this.email, this.password);
+  SignUp(this.name, this.email, this.password);
 }
 
 class SignInWithGoogle extends AuthEvent {}

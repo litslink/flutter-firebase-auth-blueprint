@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-import '../../repository/auth_repository.dart';
+import '../../data/repository/auth_repository.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
 

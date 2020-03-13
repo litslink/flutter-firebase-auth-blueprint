@@ -52,7 +52,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             title: Text('Notifications'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.supervised_user_circle),
+            icon: Icon(Icons.person),
             title: Text('Profile'),
           ),
         ],
