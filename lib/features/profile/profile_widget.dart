@@ -18,32 +18,47 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile',
-          style: TextStyle(fontSize: 18, color: Colors.black),
+    return BlocProvider(
+      create: (_) => ProfileBloc(authRepository)..add(FetchProfileInfo()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Profile',
+            style: TextStyle(fontSize: 18, color: Colors.black),
+          ),
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          actions: <Widget>[
+            BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, state) {
+                if (state is ProfileInfo) {
+                  return GestureDetector(
+                    onTap: () async {
+                      final result = await Navigator.of(context).pushNamed(
+                          EditProfileWidget.route,
+                          arguments: state.user
+                      ) as bool;
+                      if (result) {
+                        BlocProvider.of<ProfileBloc>(context)
+                            .add(FetchProfileInfo());
+                      }
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('Edit',
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container(height: 0, width: 0);
+                }
+              },
+            )
+          ],
         ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed(EditProfileWidget.route);
-            },
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text('Edit',
-                  style: TextStyle(fontSize: 16, color: Colors.blue),
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-      body: BlocProvider(
-        create: (_) => ProfileBloc(authRepository)..add(FetchProfileInfo()),
-        child: BlocConsumer<ProfileBloc, ProfileState>(
+        body: BlocConsumer<ProfileBloc, ProfileState>(
           listener: (_, state) {
             if (state is AuthenticationRequired) {
               Navigator.of(context).popAndPushNamed(AuthWidget.route);

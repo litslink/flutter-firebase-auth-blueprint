@@ -13,10 +13,7 @@ class AuthRepository {
 
   Future<void> signUp(String name, String email, String password) async {
     await auth.createUserWithEmailAndPassword(email: email, password: password);
-
-    final info = UserUpdateInfo()
-      ..displayName = name;
-    await (await auth.currentUser()).updateProfile(info);
+    await updateUserName(name);
   }
 
   Future<void> signIn(String email, String password) async {
@@ -60,6 +57,30 @@ class AuthRepository {
 
   Future<void> sendPasswordResetEmail(String email) async {
     await auth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<bool> updateUserName(String name) async {
+    final currentUser = await auth.currentUser();
+    if (currentUser.displayName != name) {
+      final info = UserUpdateInfo()
+        ..displayName = name;
+      await currentUser.updateProfile(info);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> updatePhotoUrl(String photoUrl) async {
+    final currentUser = await auth.currentUser();
+    if (currentUser.photoUrl != photoUrl) {
+      final info = UserUpdateInfo()
+        ..photoUrl = photoUrl;
+      await currentUser.updateProfile(info);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<void> signOut() async {
