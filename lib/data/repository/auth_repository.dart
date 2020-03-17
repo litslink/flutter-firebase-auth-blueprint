@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_firebase_auth_blueprint/data/model/auth_state.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../model/user.dart';
 
@@ -11,13 +12,17 @@ class AuthRepository {
 
   AuthRepository(this.auth, this.googleSignIn);
 
+  final _authStateController = StreamController<AuthState>.broadcast();
+
   Future<void> signUp(String name, String email, String password) async {
     await auth.createUserWithEmailAndPassword(email: email, password: password);
     await updateUserName(name);
+    await _triggerAuthChanges();
   }
 
   Future<void> signIn(String email, String password) async {
     await auth.signInWithEmailAndPassword(email: email, password: password);
+    await _triggerAuthChanges();
   }
 
   Future<void> signInWithGoogle() async {
@@ -28,6 +33,7 @@ class AuthRepository {
         accessToken: googleAuth.accessToken
     );
     await auth.signInWithCredential(credential);
+    await _triggerAuthChanges();
   }
 
   Future<String> requestPhoneVerification(
@@ -53,6 +59,7 @@ class AuthRepository {
         smsCode: smsCode
     );
     await auth.signInWithCredential(credential);
+    await _triggerAuthChanges();
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
@@ -65,6 +72,7 @@ class AuthRepository {
       final info = UserUpdateInfo()
         ..displayName = name;
       await currentUser.updateProfile(info);
+      await _triggerAuthChanges();
       return true;
     } else {
       return false;
@@ -77,6 +85,7 @@ class AuthRepository {
       final info = UserUpdateInfo()
         ..photoUrl = photoUrl;
       await currentUser.updateProfile(info);
+      await _triggerAuthChanges();
       return true;
     } else {
       return false;
@@ -86,7 +95,10 @@ class AuthRepository {
   Future<void> signOut() async {
     await auth.signOut();
     await googleSignIn.signOut();
+    await _triggerAuthChanges();
   }
+
+  Stream<AuthState> authState() => _authStateController.stream;
 
   Future<User> getUser() async {
     final networkModel = await auth.currentUser();
@@ -97,5 +109,16 @@ class AuthRepository {
         networkModel.phoneNumber,
         networkModel.uid
     ) : null;
+  }
+
+  Future<void> _triggerAuthChanges() async {
+    final user = await getUser();
+    AuthState state;
+    if (user != null) {
+      state = Authenticated(user);
+    } else {
+      state  = Unauthenticated();
+    }
+    _authStateController.add(state);
   }
 }

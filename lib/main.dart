@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/auth_event.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -20,15 +22,15 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: MaterialApp(
-        initialRoute: SplashWidget.route,
+        initialRoute: SignInWidget.route,
         routes: {
-          SplashWidget.route: (_) => SplashWidget(),
           HomeWidget.route: (_) => HomeWidget(),
           AuthWidget.route: (_) => AuthWidget(),
           ProfileWidget.route: (_) => ProfileWidget(),
           PhoneVerificationWidget.route: (_) => PhoneVerificationWidget(),
           PasswordResetWidget.route: (_) => PasswordResetWidget(),
-          EditProfileWidget.route: (_) => EditProfileWidget()
+          EditProfileWidget.route: (_) => EditProfileWidget(),
+          SignInWidget.route: (_) => SignInWidget()
         },
       ),
     );

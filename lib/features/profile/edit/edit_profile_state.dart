@@ -16,3 +16,5 @@ class EditCompleted extends EditProfileState {
   // ignore: avoid_positional_boolean_parameters
   EditCompleted(this.containsChanges);
 }
+
+class Error extends EditProfileState {}

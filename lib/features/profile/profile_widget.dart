@@ -48,19 +48,6 @@ class ProfileWidget extends StatelessWidget {
                       ),
                     ),
                   );
-                  return GestureDetector(
-                    onTap: () async {
-
-                    },
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text('Edit',
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
-                        ),
-                      ),
-                    ),
-                  );
                 } else {
                   return Container(height: 0, width: 0);
                 }

@@ -277,7 +277,7 @@ class _AuthWidgetState extends State<AuthWidget> {
             child: SizedBox(
                 width: 40,
                 height: 40,
-                child: Image.network('https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png')
+                child: Image.asset('assets/images/google-image.png')
             ),
           ),
         ),
@@ -290,7 +290,7 @@ class _AuthWidgetState extends State<AuthWidget> {
             child: SizedBox(
                 width: 40,
                 height: 40,
-                child: Image.network('https://image.flaticon.com/icons/png/512/124/124010.png')
+                child: Image.asset('assets/images/facebook-image.png')
             ),
           ),
         ),

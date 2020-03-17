@@ -37,7 +37,9 @@ class _EditProfileState extends State<EditProfileWidget> {
             Navigator.of(context).pop(state.containsChanges);
           }
         },
-        buildWhen: (_, state) => state == Loading || state == ProfileInfo,
+        buildWhen: (_, state) => state is Loading
+            || state is ProfileInfo
+            || state is Error,
         // ignore: missing_return
         builder: (context, state) {
           if (state is Loading) {
@@ -50,6 +52,12 @@ class _EditProfileState extends State<EditProfileWidget> {
             return Scaffold(
                 appBar: _buildAppBar(context),
                 body: _buildProfileInfo(context, state.user)
+            );
+          } else if (state is Error) {
+            return Scaffold(
+              body: Center(
+                child: Text('Something went wrong :('),
+              ),
             );
           }
         },
