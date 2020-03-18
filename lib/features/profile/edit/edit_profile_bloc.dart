@@ -25,17 +25,23 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
   @override
   Stream<EditProfileState> mapEventToState(EditProfileEvent event) async* {
-    if (event is NameChanged) {
-      _currentUser = _currentUser.copyWith(
-        displayName: event.name
-      );
-    } else if (event is PhotoChanged) {
-      _currentPhoto = event.photo;
-    } else if (event is ConfirmChanges) {
-      yield Loading();
-      await _preparePhoto();
-      final containsChanges = await _applyChanges();
-      yield EditCompleted(containsChanges);
+    try {
+      if (event is NameChanged) {
+        _currentUser = _currentUser.copyWith(
+            displayName: event.name
+        );
+      } else if (event is PhotoChanged) {
+        _currentPhoto = event.photo;
+      } else if (event is ConfirmChanges) {
+        yield Loading();
+        await _preparePhoto();
+        final containsChanges = await _applyChanges();
+        yield EditCompleted(containsChanges);
+      }
+    // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      print(e);
+      yield Error();
     }
   }
 

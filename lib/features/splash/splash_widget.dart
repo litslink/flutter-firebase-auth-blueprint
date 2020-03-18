@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/home/home_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/repository/auth_repository.dart';
-import '../auth/auth_widget.dart';
-import '../profile/profile_widget.dart';
 import 'splash_bloc.dart';
 import 'splash_event.dart';
 import 'splash_state.dart';
@@ -31,7 +30,7 @@ class SplashWidget extends StatelessWidget {
           if (state is Authenticated) {
             Navigator.of(context).popAndPushNamed(HomeWidget.route);
           } else if (state is AuthenticationRequired) {
-            Navigator.of(context).popAndPushNamed(AuthWidget.route);
+            Navigator.of(context).popAndPushNamed(SignInWidget.route);
           }
         },
         child: Center(child: CircularProgressIndicator()),

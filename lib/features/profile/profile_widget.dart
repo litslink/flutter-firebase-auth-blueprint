@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/model/user.dart';
 import '../../data/repository/auth_repository.dart';
-import '../auth/auth_widget.dart';
 import 'profile_bloc.dart';
 import 'profile_event.dart';
 import 'profile_state.dart';
@@ -48,19 +48,6 @@ class ProfileWidget extends StatelessWidget {
                       ),
                     ),
                   );
-                  return GestureDetector(
-                    onTap: () async {
-
-                    },
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text('Edit',
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
-                        ),
-                      ),
-                    ),
-                  );
                 } else {
                   return Container(height: 0, width: 0);
                 }
@@ -71,7 +58,7 @@ class ProfileWidget extends StatelessWidget {
         body: BlocConsumer<ProfileBloc, ProfileState>(
           listener: (_, state) {
             if (state is AuthenticationRequired) {
-              Navigator.of(context).popAndPushNamed(AuthWidget.route);
+              Navigator.of(context).popAndPushNamed(SignInWidget.route);
             }
           },
           buildWhen: (_, state) => state is Loading || state is ProfileInfo,
