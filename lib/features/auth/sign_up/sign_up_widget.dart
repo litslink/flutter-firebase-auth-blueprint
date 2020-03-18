@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_auth_blueprint/data/repository/auth_repository.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/password_reset/password_reset_widget.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_verification_widget.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_bloc.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_event.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_state.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_event.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_state.dart';
 import 'package:flutter_firebase_auth_blueprint/features/home/home_widget.dart';
 import 'package:provider/provider.dart';
 
-class SignInWidget extends StatelessWidget {
-  static final String route = '/sign_in';
+class SignUpWidget extends StatelessWidget {
+  static final String route = '/sign_up';
 
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -23,28 +22,23 @@ class SignInWidget extends StatelessWidget {
     final authRepository = Provider.of<AuthRepository>(context);
     return Scaffold(
       body: BlocProvider(
-        create: (_) => SignInBloc(authRepository),
-        child: BlocConsumer<SignInBloc, SignInState>(
-          listener: (context, state) {
+        create: (_) => SignUpBloc(authRepository),
+        child: BlocConsumer<SignUpBloc, SignUpState>(
+          listener: (_, state) {
             if (state is Authenticated) {
               Navigator.of(context).popAndPushNamed(HomeWidget.route);
-            } else if (state is PhoneVerificationRedirect) {
+            } else if (state is SignInRedirect) {
               Navigator.of(context)
-                  .popAndPushNamed(PhoneVerificationWidget.route);
-            } else if (state is ResetPasswordRedirect) {
-              Navigator.of(context).pushNamed(PasswordResetWidget.route);
-            } else if (state is CreateAccountRedirect) {
-              Navigator.of(context)
-                  .popAndPushNamed(SignUpWidget.route);
+                  .popAndPushNamed(SignInWidget.route);
             } else if (state is AuthError) {
 
             }
           },
-          buildWhen: (_, state) => state is SignInForm || state is Loading,
+          buildWhen: (_, state) => state is SignUpForm || state is Loading,
           // ignore: missing_return
           builder: (context, state) {
-            if (state is SignInForm) {
-              return _buildSignInForm(context);
+            if (state is SignUpForm) {
+              return _buildSignUpForm(context);
             } else if (state is Loading) {
               return Center(child: CircularProgressIndicator());
             }
@@ -54,12 +48,32 @@ class SignInWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSignInForm(BuildContext context) {
+  Widget _buildSignUpForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: TextFormField(
+              maxLines: 1,
+              keyboardType: TextInputType.text,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Name',
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                  ),
+                  helperText: ' '
+              ),
+              validator: (value) => value.isEmpty
+                  ? 'Name can\'t be empty' : null,
+              controller: _nameController,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
             child: TextFormField(
@@ -101,6 +115,29 @@ class SignInWidget extends StatelessWidget {
             ),
           ),
           Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+            child: TextFormField(
+              maxLines: 1,
+              obscureText: true,
+              autofocus: false,
+              decoration: InputDecoration(
+                  hintText: 'Confirm password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.grey,
+                  ),
+                  helperText: ' '
+              ),
+              validator: (value) {
+                if (value.isEmpty || value != _passwordController.text) {
+                  return 'Passwords do not match';
+                } else {
+                  return null;
+                }
+              },
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
             child: Row(
               children: <Widget>[
@@ -110,16 +147,17 @@ class SignInWidget extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.0)
                     ),
                     color: Colors.blue,
-                    child: Text('Sign in',
+                    child: Text('Create account',
                         style: TextStyle(fontSize: 16, color: Colors.white)
                     ),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        final event = SignIn(
-                            _emailController.text,
-                            _passwordController.text
+                        final event = SignUp(
+                          _nameController.text,
+                          _emailController.text,
+                          _passwordController.text
                         );
-                        BlocProvider.of<SignInBloc>(context).add(event);
+                        BlocProvider.of<SignUpBloc>(context).add(event);
                       }
                     },
                   ),
@@ -127,79 +165,17 @@ class SignInWidget extends StatelessWidget {
               ],
             ),
           ),
-          _buildAdditionSignInMethod(context),
           GestureDetector(
             onTap: () {
-              final event = CreateAccount();
-              BlocProvider.of<SignInBloc>(context).add(event);
+              final event = SignIn();
+              BlocProvider.of<SignUpBloc>(context).add(event);
             },
-            child: Text('or create an account',
+            child: Text('or sign in',
                 style: TextStyle(fontSize: 16, color: Colors.blue)
             ),
-          ),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  final event = ResetPassword();
-                  BlocProvider.of<SignInBloc>(context).add(event);
-                },
-                child:Text('Forgot your password?',
-                    style: TextStyle(fontSize: 14, color: Colors.black38)
-                ),
-              )
           )
         ],
       ),
-    );
-  }
-
-  Widget _buildAdditionSignInMethod(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            final event = SignInWithGoogle();
-            BlocProvider.of<SignInBloc>(context).add(event);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-                width: 40,
-                height: 40,
-                child: Image.asset('assets/images/google-image.png')
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-                width: 40,
-                height: 40,
-                child: Image.asset('assets/images/facebook-image.png')
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            final event = SignInWithPhoneNumber();
-            BlocProvider.of<SignInBloc>(context).add(event);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-                width: 40,
-                height: 40,
-                child: Icon(Icons.phone_android, size: 40,)
-            ),
-          ),
-        )
-      ],
     );
   }
 
