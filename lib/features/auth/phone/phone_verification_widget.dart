@@ -23,6 +23,12 @@ class PhoneVerificationWidget extends StatelessWidget {
           listener: (_, state) {
             if (state is Authenticated) {
               Navigator.of(context).popAndPushNamed(HomeWidget.route);
+            } else if (state is AuthError) {
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Something went wrong. Check your internet connection'),
+                  )
+              );
             }
           },
           buildWhen: (_, state) => state is PhoneInputForm

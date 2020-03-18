@@ -35,7 +35,11 @@ class PasswordResetWidget extends StatelessWidget {
         child: BlocConsumer<PasswordResetBloc, PasswordResetState>(
           listener: (_, state) {
             if (state is AuthError) {
-
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Something went wrong. Check your internet connection'),
+                  )
+              );
             }
           },
           buildWhen: (_, state) => state is EmailInputForm

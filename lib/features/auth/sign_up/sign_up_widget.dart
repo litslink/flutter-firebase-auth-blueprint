@@ -31,7 +31,11 @@ class SignUpWidget extends StatelessWidget {
               Navigator.of(context)
                   .popAndPushNamed(SignInWidget.route);
             } else if (state is AuthError) {
-
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Something went wrong. Check your internet connection'),
+                  )
+              );
             }
           },
           buildWhen: (_, state) => state is SignUpForm || state is Loading,
