@@ -23,6 +23,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       } catch (e) {
         print(e);
         yield AuthError();
+        yield SignUpForm();
       }
     } else if (event is SignIn) {
       yield SignInRedirect();

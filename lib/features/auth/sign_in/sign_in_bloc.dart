@@ -22,6 +22,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       } catch (e) { // ignore: avoid_catches_without_on_clauses
         print(e);
         yield AuthError();
+        yield SignInForm();
       }
     } else if (event is SignInWithGoogle) {
       yield Loading();
@@ -31,6 +32,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       } catch (e) { // ignore: avoid_catches_without_on_clauses
         print(e);
         yield AuthError();
+        yield SignInForm();
       }
     } else if (event is SignInWithPhoneNumber) {
       yield PhoneVerificationRedirect();
