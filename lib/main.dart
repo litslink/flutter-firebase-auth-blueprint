@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'features/auth/password_reset/password_reset_widget.dart';
 import 'features/auth/phone/phone_verification_widget.dart';
 import 'features/home/home_widget.dart';
-import 'features/profile/profile_widget.dart';
+import 'features/profile/preview/profile_widget.dart';
 import 'features/splash/splash_widget.dart';
 import 'providers.dart';
 
