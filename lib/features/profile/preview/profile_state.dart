@@ -1,4 +1,4 @@
-import '../../data/model/user.dart';
+import '../../../data/model/user.dart';
 
 abstract class ProfileState {}
 
@@ -6,8 +6,10 @@ class Loading extends ProfileState {}
 
 class ProfileInfo extends ProfileState {
   final User user;
+  final bool isNotificationEnabled;
 
-  ProfileInfo(this.user);
+  // ignore: avoid_positional_boolean_parameters
+  ProfileInfo(this.user, this.isNotificationEnabled);
 }
 
 class AuthenticationRequired extends ProfileState {}

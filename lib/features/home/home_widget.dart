@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../chat/chat_widget.dart';
 import '../notification/notification_widget.dart';
-import '../profile/profile_widget.dart';
+import '../profile/preview/profile_widget.dart';
 
 class HomeWidget extends StatefulWidget {
   static final String route = '/home';
