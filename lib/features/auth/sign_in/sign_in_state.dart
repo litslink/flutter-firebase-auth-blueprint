@@ -1,6 +1,11 @@
 abstract class SignInState {}
 
-class SignInForm extends SignInState {}
+class SignInForm extends SignInState {
+  final bool isEmailValid;
+  final bool isPasswordValid;
+
+  SignInForm(this.isEmailValid, this.isPasswordValid);
+}
 
 class Loading extends SignInState {}
 
