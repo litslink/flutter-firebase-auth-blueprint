@@ -1,11 +1,18 @@
 abstract class SignInEvent {}
 
-class SignIn extends SignInEvent {
+class EmailChanged extends SignInEvent {
   final String email;
+
+  EmailChanged(this.email);
+}
+
+class PasswordChanged extends SignInEvent {
   final String password;
 
-  SignIn(this.email, this.password);
+  PasswordChanged(this.password);
 }
+
+class SignIn extends SignInEvent {}
 
 class SignInWithGoogle extends SignInEvent {}
 
