@@ -1,0 +1,25 @@
+name: flutter_firebase_auth_blueprint
+description: Firebase Auth blueprint.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^3.2.0
+  provider: ^4.0.4
+  image_picker: 0.6.3+4
+  flutter_firebase_auth_blueprint_common:
+    path: ../common/
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  effective_dart: 1.2.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
