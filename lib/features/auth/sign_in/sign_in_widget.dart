@@ -55,7 +55,8 @@ class SignInWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSignInForm(BuildContext context, bool isEmailValid, bool isPasswordValid) {
+  Widget _buildSignInForm(BuildContext context,
+      bool isEmailValid, bool isPasswordValid) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
