@@ -1,11 +1,29 @@
 abstract class SignUpEvent {}
 
-class SignUp extends SignUpEvent {
+class NameChanged extends SignUpEvent {
   final String name;
+
+  NameChanged(this.name);
+}
+
+class EmailChanged extends SignUpEvent {
   final String email;
+
+  EmailChanged(this.email);
+}
+
+class PasswordChanged extends SignUpEvent {
   final String password;
 
-  SignUp(this.name, this.email, this.password);
+  PasswordChanged(this.password);
 }
+
+class ConfirmPasswordChanged extends SignUpEvent {
+  final String password;
+
+  ConfirmPasswordChanged(this.password);
+}
+
+class SignUp extends SignUpEvent {}
 
 class SignIn extends SignUpEvent {}

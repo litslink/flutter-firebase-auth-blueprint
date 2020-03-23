@@ -18,3 +18,9 @@ class PasswordValidator implements Validator {
   @override
   bool validate(String input) => input.length >= 8;
 }
+
+class NameValidator implements Validator {
+
+  @override
+  bool validate(String input) => input.isNotEmpty;
+}
