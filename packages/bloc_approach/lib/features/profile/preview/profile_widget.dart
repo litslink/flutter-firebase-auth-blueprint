@@ -80,6 +80,7 @@ class ProfileWidget extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _ProfileInfoWidget extends StatefulWidget {
   final User user;
   bool isNotificationEnabled;

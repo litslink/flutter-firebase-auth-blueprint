@@ -6,6 +6,7 @@ class SignUpForm extends SignUpState {
   final bool isPasswordValid;
   final bool isConfirmPasswordValid;
 
+  // ignore: avoid_positional_boolean_parameters
   SignUpForm(this.isNameValid, this.isEmailValid,
       this.isPasswordValid, this.isConfirmPasswordValid);
 }

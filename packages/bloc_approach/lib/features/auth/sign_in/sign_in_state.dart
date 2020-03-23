@@ -4,6 +4,7 @@ class SignInForm extends SignInState {
   final bool isEmailValid;
   final bool isPasswordValid;
 
+  // ignore: avoid_positional_boolean_parameters
   SignInForm(this.isEmailValid, this.isPasswordValid);
 }
 

@@ -25,7 +25,9 @@ class PhoneVerificationWidget extends StatelessWidget {
             } else if (state is AuthError) {
               Scaffold.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Something went wrong. Check your internet connection'),
+                    content: Text(
+                        'Something went wrong. Check your internet connection'
+                    ),
                   )
               );
             }

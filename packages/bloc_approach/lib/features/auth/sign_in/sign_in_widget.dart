@@ -35,7 +35,9 @@ class SignInWidget extends StatelessWidget {
             } else if (state is AuthError) {
               Scaffold.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Something went wrong. Check your internet connection'),
+                    content: Text(
+                        'Something went wrong. Check your internet connection'
+                    ),
                   )
               );
             }
@@ -194,15 +196,5 @@ class SignInWidget extends StatelessWidget {
         )
       ],
     );
-  }
-
-  bool _validateEmail(String email) {
-    return RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"
-    ).hasMatch(email);
-  }
-
-  bool _validatePassword(String password) {
-    return password.length > 8;
   }
 }
