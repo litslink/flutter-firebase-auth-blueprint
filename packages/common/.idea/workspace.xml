@@ -1,126 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="032f1a6e-0dfe-4b23-bec2-e61f9e4e00ba" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.packages" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_options.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.metadata" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/.metadata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../analysis_options.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/analysis_options.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/debug/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/kotlin/com/example/flutter_firebase_auth_blueprint/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/kotlin/com/example/flutter_firebase_auth_blueprint/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/drawable/launch_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/drawable/launch_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/main/res/values/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../android/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/android/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../assets/images/facebook-image.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/assets/images/facebook-image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../assets/images/google-image.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/assets/images/google-image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Flutter/AppFrameworkInfo.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Flutter/AppFrameworkInfo.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Flutter/Debug.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Flutter/Debug.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Flutter/Release.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Flutter/Release.xcconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner.xcworkspace/contents.xcworkspacedata" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner.xcworkspace/contents.xcworkspacedata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/AppDelegate.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Base.lproj/LaunchScreen.storyboard" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Base.lproj/LaunchScreen.storyboard" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Base.lproj/Main.storyboard" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Base.lproj/Main.storyboard" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../ios/Runner/Runner-Bridging-Header.h" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/ios/Runner/Runner-Bridging-Header.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/model/auth_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/model/auth_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/model/user.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/model/user.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/repository/auth_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/repository/auth_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/repository/settings_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/data/repository/settings_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/util/image_manager.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/util/image_manager.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/util/validation/validation_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/data/util/validation/validation_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/util/validation/validation_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/util/validation/validation_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/data/util/validation/validators.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/util/validation/validators.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/password_reset/password_reset_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/password_reset/password_reset_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/password_reset/password_reset_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/password_reset/password_reset_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/password_reset/password_reset_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/password_reset/password_reset_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/password_reset/password_reset_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/password_reset/password_reset_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/phone/opt_input_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/phone/opt_input_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/phone/phone_input_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/phone/phone_input_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/phone/phone_verification_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/phone/phone_verification_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/phone/phone_verification_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/phone/phone_verification_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/phone/phone_verification_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/phone/phone_verification_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/phone/phone_verification_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/phone/phone_verification_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_in/sign_in_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_in/sign_in_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_in/sign_in_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_in/sign_in_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_in/sign_in_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_in/sign_in_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_in/sign_in_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_in/sign_in_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_up/sign_up_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_up/sign_up_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_up/sign_up_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_up/sign_up_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_up/sign_up_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_up/sign_up_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/auth/sign_up/sign_up_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/auth/sign_up/sign_up_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/chat/chat_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/chat/chat_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/home/home_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/home/home_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/notification/notification_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/notification/notification_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/edit/edit_profile_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/edit/edit_profile_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/edit/edit_profile_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/edit/edit_profile_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/edit/edit_profile_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/edit/edit_profile_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/edit/edit_profile_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/edit/edit_profile_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/preview/profile_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/preview/profile_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/preview/profile_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/preview/profile_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/preview/profile_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/preview/profile_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/profile/preview/profile_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/profile/preview/profile_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/splash/splash_bloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/splash/splash_bloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/splash/splash_event.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/splash/splash_event.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/splash/splash_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/splash/splash_state.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/features/splash/splash_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/features/splash/splash_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib/providers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/lib/providers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../bloc_approach/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="032f1a6e-0dfe-4b23-bec2-e61f9e4e00ba" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,10 +15,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lib/data/repository/settings_repository.dart">
+        <entry file="file://$PROJECT_DIR$/lib/util/image_manager.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="26" lean-forward="true" selection-start-line="26" selection-start-column="26" selection-end-line="26" selection-end-column="26" />
+            <state relative-caret-position="240">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
             </state>
           </provider>
         </entry>
@@ -165,6 +46,7 @@
         <option value="$PROJECT_DIR$/.idea/codeStyles/Project.xml" />
         <option value="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" />
         <option value="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" />
+        <option value="$PROJECT_DIR$/../../.idea/flutter_firebase_auth_blueprint.iml" />
       </list>
     </option>
   </component>
@@ -267,7 +149,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.32967034" />
       <window_info id="Structure" side_tool="true" />
