@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_firebase_auth_blueprint/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint/data/util/validation/validation_bloc.dart';
-import 'package:flutter_firebase_auth_blueprint/data/util/validation/validation_state.dart';
-import 'package:flutter_firebase_auth_blueprint/data/util/validation/validators.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_event.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_state.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
+import 'package:flutter_firebase_auth_blueprint_common/util/validation/validation_state.dart';
+import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
