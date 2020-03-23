@@ -1,6 +1,14 @@
 abstract class SignUpState {}
 
-class SignUpForm extends SignUpState {}
+class SignUpForm extends SignUpState {
+  final bool isNameValid;
+  final bool isEmailValid;
+  final bool isPasswordValid;
+  final bool isConfirmPasswordValid;
+
+  SignUpForm(this.isNameValid, this.isEmailValid,
+      this.isPasswordValid, this.isConfirmPasswordValid);
+}
 
 class Loading extends SignUpState {}
 

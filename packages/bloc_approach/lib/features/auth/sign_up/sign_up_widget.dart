@@ -12,11 +12,6 @@ import 'package:provider/provider.dart';
 class SignUpWidget extends StatelessWidget {
   static final String route = '/sign_up';
 
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
@@ -24,7 +19,7 @@ class SignUpWidget extends StatelessWidget {
       body: BlocProvider(
         create: (_) => SignUpBloc(authRepository),
         child: BlocConsumer<SignUpBloc, SignUpState>(
-          listener: (_, state) {
+          listener: (context, state) {
             if (state is Authenticated) {
               Navigator.of(context).popAndPushNamed(HomeWidget.route);
             } else if (state is SignInRedirect) {
@@ -42,7 +37,9 @@ class SignUpWidget extends StatelessWidget {
           // ignore: missing_return
           builder: (context, state) {
             if (state is SignUpForm) {
-              return _buildSignUpForm(context);
+              return _buildSignUpForm(context,
+                  state.isNameValid, state.isEmailValid,
+                  state.isPasswordValid, state.isConfirmPasswordValid);
             } else if (state is Loading) {
               return Center(child: CircularProgressIndicator());
             }
@@ -52,144 +49,130 @@ class SignUpWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSignUpForm(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: TextFormField(
-              maxLines: 1,
-              keyboardType: TextInputType.text,
-              autofocus: false,
-              decoration: InputDecoration(
-                  hintText: 'Name',
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.grey,
-                  ),
-                  helperText: ' '
-              ),
-              validator: (value) => value.isEmpty
-                  ? 'Name can\'t be empty' : null,
-              controller: _nameController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: TextFormField(
-              maxLines: 1,
-              keyboardType: TextInputType.emailAddress,
-              autofocus: false,
-              decoration: InputDecoration(
-                  hintText: 'Email',
-                  icon: Icon(
-                    Icons.mail,
-                    color: Colors.grey,
-                  ),
-                  helperText: ' '
-              ),
-              validator: (value) => _validateEmail(value)
-                  ? null
-                  : 'Incorrect email form',
-              controller: _emailController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-            child: TextFormField(
-              maxLines: 1,
-              obscureText: true,
-              autofocus: false,
-              decoration: InputDecoration(
-                  hintText: 'Password',
-                  icon: Icon(
-                    Icons.lock,
-                    color: Colors.grey,
-                  ),
-                  helperText: ' '
-              ),
-              validator: (value) => _validatePassword(value)
-                  ? null
-                  : 'Password is too short',
-              controller: _passwordController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-            child: TextFormField(
-              maxLines: 1,
-              obscureText: true,
-              autofocus: false,
-              decoration: InputDecoration(
-                  hintText: 'Confirm password',
-                  icon: Icon(
-                    Icons.lock,
-                    color: Colors.grey,
-                  ),
-                  helperText: ' '
-              ),
-              validator: (value) {
-                if (value.isEmpty || value != _passwordController.text) {
-                  return 'Passwords do not match';
-                } else {
-                  return null;
-                }
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)
-                    ),
-                    color: Colors.blue,
-                    child: Text('Create account',
-                        style: TextStyle(fontSize: 16, color: Colors.white)
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        final event = SignUp(
-                          _nameController.text,
-                          _emailController.text,
-                          _passwordController.text
-                        );
-                        BlocProvider.of<SignUpBloc>(context).add(event);
-                      }
-                    },
-                  ),
+  Widget _buildSignUpForm(BuildContext context,
+      bool isNameValid, bool isEmailValid,
+      bool isPasswordValid, bool isConfirmPasswordValid) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.text,
+            autofocus: false,
+            decoration: InputDecoration(
+                hintText: 'Name',
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.grey,
                 ),
-              ],
+                helperText: ' ',
+                errorText: isNameValid ? null : 'Name can not be empty',
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              final event = SignIn();
+            onChanged: (value) {
+              final event = NameChanged(value);
               BlocProvider.of<SignUpBloc>(context).add(event);
             },
-            child: Text('or sign in',
-                style: TextStyle(fontSize: 16, color: Colors.blue)
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: TextFormField(
+            maxLines: 1,
+            keyboardType: TextInputType.emailAddress,
+            autofocus: false,
+            decoration: InputDecoration(
+                hintText: 'Email',
+                icon: Icon(
+                  Icons.mail,
+                  color: Colors.grey,
+                ),
+                helperText: ' ',
+                errorText: isEmailValid ? null : 'Invalid email address',
             ),
-          )
-        ],
-      ),
+            onChanged: (value) {
+              final event = EmailChanged(value);
+              BlocProvider.of<SignUpBloc>(context).add(event);
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+          child: TextFormField(
+            maxLines: 1,
+            obscureText: true,
+            autofocus: false,
+            decoration: InputDecoration(
+                hintText: 'Password',
+                icon: Icon(
+                  Icons.lock,
+                  color: Colors.grey,
+                ),
+                helperText: ' ',
+                errorText: isPasswordValid ? null : 'Password is too short',
+            ),
+            onChanged: (value) {
+              final event = PasswordChanged(value);
+              BlocProvider.of<SignUpBloc>(context).add(event);
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+          child: TextFormField(
+            maxLines: 1,
+            obscureText: true,
+            autofocus: false,
+            decoration: InputDecoration(
+                hintText: 'Confirm password',
+                icon: Icon(
+                  Icons.lock,
+                  color: Colors.grey,
+                ),
+                helperText: ' ',
+                errorText: isConfirmPasswordValid
+                    ? null : 'Passwords are not valid',
+            ),
+            onChanged: (value) {
+              final event = ConfirmPasswordChanged(value);
+              BlocProvider.of<SignUpBloc>(context).add(event);
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0)
+                  ),
+                  color: Colors.blue,
+                  child: Text('Create account',
+                      style: TextStyle(fontSize: 16, color: Colors.white)
+                  ),
+                  onPressed: () {
+                    final event = SignUp();
+                    BlocProvider.of<SignUpBloc>(context).add(event);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            final event = SignIn();
+            BlocProvider.of<SignUpBloc>(context).add(event);
+          },
+          child: Text('or sign in',
+              style: TextStyle(fontSize: 16, color: Colors.blue)
+          ),
+        )
+      ],
     );
-  }
-
-  bool _validateEmail(String email) {
-    return RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+"
-    ).hasMatch(email);
-  }
-
-  bool _validatePassword(String password) {
-    return password.length > 8;
   }
 }
