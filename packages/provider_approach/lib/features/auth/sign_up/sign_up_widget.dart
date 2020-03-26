@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_delegate.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_model.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
+import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 import 'package:provider/provider.dart';
 
 class SignUpWidget extends StatelessWidget {
@@ -9,16 +12,34 @@ class SignUpWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
-    return Scaffold(
-      body: null
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: Scaffold(
+        body: ChangeNotifierProvider(
+          create: (context) => SignUpModel(
+            authRepository,
+            NameValidator(),
+            EmailValidator(),
+            PasswordValidator(),
+            SignUpDelegateImpl(context)
+          ),
+          child: Consumer<SignUpModel>(
+            // ignore: missing_return
+            builder: (_, model, __) {
+              switch (model.state) {
+                case ViewState.inputForm: return _buildSignUpForm(context, model);
+                case ViewState.loading: return _buildLoading();
+              }
+            },
+          ),
+        )
+      ),
     );
   }
 
   Widget _buildLoading() => Center(child: CircularProgressIndicator());
 
-  Widget _buildSignUpForm(BuildContext context,
-      bool isNameValid, bool isEmailValid,
-      bool isPasswordValid, bool isConfirmPasswordValid) {
+  Widget _buildSignUpForm(BuildContext context, SignUpModel model) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -30,13 +51,15 @@ class SignUpWidget extends StatelessWidget {
             keyboardType: TextInputType.text,
             autofocus: false,
             decoration: InputDecoration(
-                hintText: 'Name',
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: isNameValid ? null : 'Name can not be empty',
+              hintText: 'Name',
+              icon: Icon(
+                Icons.person,
+                color: Colors.grey,
+              ),
+              helperText: ' ',
+              errorText: model.isNameValid
+                ? null
+                : 'Name can not be empty',
             ),
             onChanged: (value) {
 
@@ -50,13 +73,15 @@ class SignUpWidget extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             autofocus: false,
             decoration: InputDecoration(
-                hintText: 'Email',
-                icon: Icon(
-                  Icons.mail,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: isEmailValid ? null : 'Invalid email address',
+              hintText: 'Email',
+              icon: Icon(
+                Icons.mail,
+                color: Colors.grey,
+              ),
+              helperText: ' ',
+              errorText: model.isEmailValid
+                ? null
+                : 'Invalid email address',
             ),
             onChanged: (value) {
 
@@ -70,13 +95,15 @@ class SignUpWidget extends StatelessWidget {
             obscureText: true,
             autofocus: false,
             decoration: InputDecoration(
-                hintText: 'Password',
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: isPasswordValid ? null : 'Password is too short',
+              hintText: 'Password',
+              icon: Icon(
+                Icons.lock,
+                color: Colors.grey,
+              ),
+              helperText: ' ',
+              errorText: model.isPasswordValid
+                ? null
+                : 'Password is too short',
             ),
             onChanged: (value) {
 
@@ -90,14 +117,15 @@ class SignUpWidget extends StatelessWidget {
             obscureText: true,
             autofocus: false,
             decoration: InputDecoration(
-                hintText: 'Confirm password',
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: isConfirmPasswordValid
-                    ? null : 'Passwords are not valid',
+              hintText: 'Confirm password',
+              icon: Icon(
+                Icons.lock,
+                color: Colors.grey,
+              ),
+              helperText: ' ',
+              errorText: model.isConfirmPasswordValid
+                ? null
+                : 'Passwords are not valid',
             ),
             onChanged: (value) {
 
@@ -110,28 +138,18 @@ class SignUpWidget extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
                   color: Colors.blue,
-                  child: Text('Create account',
-                      style: TextStyle(fontSize: 16, color: Colors.white)
-                  ),
-                  onPressed: () {
-
-                  },
+                  child: Text('Create account', style: TextStyle(fontSize: 16, color: Colors.white)),
+                  onPressed: model.signUp,
                 ),
               ),
             ],
           ),
         ),
         GestureDetector(
-          onTap: () {
-
-          },
-          child: Text('or sign in',
-              style: TextStyle(fontSize: 16, color: Colors.blue)
-          ),
+          onTap: model.signIn,
+          child: Text('or sign in', style: TextStyle(fontSize: 16, color: Colors.blue)),
         )
       ],
     );
