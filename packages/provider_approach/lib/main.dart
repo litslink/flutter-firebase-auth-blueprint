@@ -21,7 +21,7 @@ class App extends StatelessWidget {
     return MultiProvider(
       providers: providers,
       child: MaterialApp(
-        initialRoute: SignInWidget.route,
+        initialRoute: SplashWidget.route,
         routes: {
           SplashWidget.route: (_) => SplashWidget(),
           HomeWidget.route: (_) => HomeWidget(),

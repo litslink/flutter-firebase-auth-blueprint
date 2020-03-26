@@ -19,31 +19,26 @@ class SignInWidget extends StatelessWidget {
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (context) => SignInModel(
-            authRepository,
-            EmailValidator(),
-            PasswordValidator(),
-            router
+          authRepository,
+          EmailValidator(),
+          PasswordValidator(),
+          router
         ),
         child: Consumer<SignInModel>(
           builder: (_, model, __) {
             Widget view;
             switch (model.state) {
-              case ViewState.inputForm: {
+              case ViewState.inputForm:
                 view = _buildSignInForm(context, model);
-              }
-              break;
-
-              case ViewState.loading: {
-                view = Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              break;
+                break;
+              case ViewState.loading:
+                view = Center(child: CircularProgressIndicator());
+                break;
             }
             return view;
           },
         ),
-      ) ,
+      ),
     );
   }
 
@@ -58,14 +53,13 @@ class SignInWidget extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             autofocus: false,
             decoration: InputDecoration(
-                hintText: 'Email',
-                icon: Icon(
-                  Icons.mail,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: model.isEmailValid ? null : 'Invalid email address'
-            ),
+              hintText: 'Email',
+              icon: Icon(
+                Icons.mail,
+                color: Colors.grey,
+              ),
+              helperText: ' ',
+              errorText: model.isEmailValid ? null : 'Invalid email address'),
             onChanged: model.emailChanged,
           ),
         ),
@@ -76,15 +70,13 @@ class SignInWidget extends StatelessWidget {
             obscureText: true,
             autofocus: false,
             decoration: InputDecoration(
-                hintText: 'Password',
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: model.isPasswordValid
-                    ? null
-                    : 'Password is too short'
+              hintText: 'Password',
+              icon: Icon(
+                Icons.lock,
+                color: Colors.grey,
+              ),
+              helperText: ' ',
+              errorText: model.isPasswordValid ? null : 'Password is too short'
             ),
             onChanged: model.passwordChanged,
           ),
@@ -96,12 +88,10 @@ class SignInWidget extends StatelessWidget {
               Expanded(
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
+                    borderRadius: BorderRadius.circular(30.0)),
                   color: Colors.blue,
                   child: Text('Sign in',
-                      style: TextStyle(fontSize: 16, color: Colors.white)
-                  ),
+                    style: TextStyle(fontSize: 16, color: Colors.white)),
                   onPressed: model.signIn,
                 ),
               ),
@@ -111,12 +101,10 @@ class SignInWidget extends StatelessWidget {
         _buildAdditionSignInMethod(context, model),
         GestureDetector(
           onTap: () {
-            Navigator.of(context)
-                .popAndPushNamed(SignUpWidget.route);
+            Navigator.of(context).popAndPushNamed(SignUpWidget.route);
           },
           child: Text('or create an account',
-              style: TextStyle(fontSize: 16, color: Colors.blue)
-          ),
+              style: TextStyle(fontSize: 16, color: Colors.blue)),
         ),
         Padding(
             padding: const EdgeInsets.all(8.0),
@@ -124,11 +112,8 @@ class SignInWidget extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushNamed(PasswordResetWidget.route);
               },
-              child:Text('Forgot your password?',
-                  style: TextStyle(fontSize: 14, color: Colors.black38)
-              ),
-            )
-        )
+              child: Text('Forgot your password?', style: TextStyle(fontSize: 14, color: Colors.black38)),
+            ))
       ],
     );
   }
@@ -142,36 +127,34 @@ class SignInWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
-                width: 40,
-                height: 40,
-                child: Image.asset('assets/images/google-image.png')
-            ),
+              width: 40,
+              height: 40,
+              child: Image.asset('assets/images/google-image.png')),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: Image.asset('assets/images/facebook-image.png')),
           ),
         ),
         GestureDetector(
           onTap: () {
-
+            Navigator.of(context).popAndPushNamed(PhoneVerificationWidget.route);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
-                width: 40,
-                height: 40,
-                child: Image.asset('assets/images/facebook-image.png')
-            ),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .popAndPushNamed(PhoneVerificationWidget.route);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-                width: 40,
-                height: 40,
-                child: Icon(Icons.phone_android, size: 40,)
+              width: 40,
+              height: 40,
+              child: Icon(
+                Icons.phone_android,
+                size: 40,
+              )
             ),
           ),
         )
