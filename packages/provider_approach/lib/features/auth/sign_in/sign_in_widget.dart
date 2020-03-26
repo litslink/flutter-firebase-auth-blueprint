@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/password_reset/password_reset_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/phone/phone_verification_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_model.dart';
-import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_router.dart';
+import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_widget.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
@@ -15,28 +15,25 @@ class SignInWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
-    final router = SignInRouterImpl(context);
-    return Scaffold(
-      body: ChangeNotifierProvider(
-        create: (context) => SignInModel(
-          authRepository,
-          EmailValidator(),
-          PasswordValidator(),
-          router
-        ),
-        child: Consumer<SignInModel>(
-          builder: (_, model, __) {
-            Widget view;
-            switch (model.state) {
-              case ViewState.inputForm:
-                view = _buildSignInForm(context, model);
-                break;
-              case ViewState.loading:
-                view = Center(child: CircularProgressIndicator());
-                break;
-            }
-            return view;
-          },
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: Scaffold(
+        body: ChangeNotifierProvider(
+          create: (context) => SignInModel(
+            authRepository,
+            EmailValidator(),
+            PasswordValidator(),
+            SignInDelegateImpl(context)
+          ),
+          child: Consumer<SignInModel>(
+            // ignore: missing_return
+            builder: (_, model, __) {
+              switch (model.state) {
+                case ViewState.inputForm: return _buildSignInForm(context, model);
+                case ViewState.loading: return Center(child: CircularProgressIndicator());
+              }
+            },
+          ),
         ),
       ),
     );
@@ -100,18 +97,14 @@ class SignInWidget extends StatelessWidget {
         ),
         _buildAdditionSignInMethod(context, model),
         GestureDetector(
-          onTap: () {
-            Navigator.of(context).popAndPushNamed(SignUpWidget.route);
-          },
+          onTap: model.signUp,
           child: Text('or create an account',
               style: TextStyle(fontSize: 16, color: Colors.blue)),
         ),
         Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(PasswordResetWidget.route);
-              },
+              onTap: model.resetPassword,
               child: Text('Forgot your password?', style: TextStyle(fontSize: 14, color: Colors.black38)),
             ))
       ],
@@ -143,9 +136,7 @@ class SignInWidget extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.of(context).popAndPushNamed(PhoneVerificationWidget.route);
-          },
+          onTap: model.signUpWithPhone,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: SizedBox(
