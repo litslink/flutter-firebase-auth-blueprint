@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_router.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
@@ -18,8 +18,11 @@ class SignInModel extends ChangeNotifier {
   String _email = '';
   String _password = '';
 
-  SignInModel(this._authRepository, this._emailValidator,
-      this._passwordValidator, this._router);
+  SignInModel(
+    this._authRepository,
+    this._emailValidator,
+    this._passwordValidator,
+    this._router);
 
   ViewState get state => _state;
   bool get isEmailValid => _isEmailValid;
