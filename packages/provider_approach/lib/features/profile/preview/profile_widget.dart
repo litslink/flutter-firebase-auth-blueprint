@@ -17,7 +17,7 @@ class ProfileWidget extends StatelessWidget {
     final profileModel = ProfileModel(
         authRepository, settingsRepository, ProfileDelegateImpl(context));
     return Scaffold(
-      appBar: _buildAppBar(context, profileModel),
+      appBar: _buildAppBar(profileModel),
       body: ChangeNotifierProvider(
         create: (context) => profileModel,
         child: Consumer<ProfileModel>(
@@ -178,7 +178,7 @@ class ProfileWidget extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context, ProfileModel model) {
+  AppBar _buildAppBar(ProfileModel model) {
     return AppBar(
       title: Text(
         'Profile',
