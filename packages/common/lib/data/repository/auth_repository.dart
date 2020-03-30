@@ -6,11 +6,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../model/user.dart';
 
 class AuthRepository {
-
   final FirebaseAuth auth;
   final GoogleSignIn googleSignIn;
 
-  AuthRepository(this.auth, this.googleSignIn);
+  AuthRepository(
+    this.auth,
+    this.googleSignIn);
 
   final _authStateController = StreamController<AuthState>.broadcast();
 

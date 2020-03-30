@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../chat/chat_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/notes/notes_widget.dart';
 import '../notification/notification_widget.dart';
 import '../profile/preview/profile_widget.dart';
 
@@ -13,27 +13,19 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   int _selectedIndex = 0;
 
+  final _pages = {
+    0: NotesWidget(),
+    1: NotificationWidget(),
+    2: ProfileWidget()
+  };
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return ChatWidget();
-        break;
-      case 1:
-        return NotificationWidget();
-        break;
-      case 2:
-        return ProfileWidget();
-        break;
-      default:
-        return ChatWidget();
-    }
-  }
+  Widget _getPage(int index) => _pages[index] ?? NotesWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +36,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            title: Text('Chat'),
+            icon: Icon(Icons.note),
+            title: Text('Notes'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
