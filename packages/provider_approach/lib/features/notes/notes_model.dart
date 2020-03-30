@@ -18,6 +18,8 @@ class Loading extends ViewState {}
 
 class Empty extends ViewState {}
 
+class Error extends ViewState {}
+
 
 class NotesModel extends BaseModel<ViewState> {
   final NotesRepository _notesRepository;
@@ -61,7 +63,7 @@ class NotesModel extends BaseModel<ViewState> {
     _notesSubscription = _notesRepository.get(userId).listen(
       _onNotesChanged,
       onError: (Object error) {
-        _delegate.showFetchError();
+        state = Error();
       }
     );
   }
