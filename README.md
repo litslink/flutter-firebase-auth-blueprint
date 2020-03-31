@@ -20,9 +20,9 @@ Before run project you should:
 The core of concept is combination of [Provider DI library](https://pub.dev/packages/provider) and [ChangeNotifier mechanism](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple). Model is the main component which connect UI and data. Model instance should be independent to UI rebuild. Model lifecycle is equal to widget state. Use `ChangeNotifierProvider` which save model instance during rebuild process.
 
 ![Provider architecture](diagrams/provider_diagram.png)
-* **Changes notification**. Your model class extends `ChangeNotifier`. If you want to change UI from model than you should update model fields and call `notifyListeners()` method which rebuild your UI using updated model data.
+* **(1) Changes notification**. Your model class extends `ChangeNotifier`. If you want to change UI from model than you should update model fields and call `notifyListeners()` method which rebuild your UI using updated model data.
 
-* **Call of method**. You have access to model methods from UI. Use `Consumer` widget to tie up your model and UI component.
+* **(2) Call of method**. You have access to model methods from UI. Use `Consumer` widget to tie up your model and UI component.
 
 Example of `ChangeNotifierProvider` + `Consumer` combination:
 ```dart
@@ -37,10 +37,10 @@ ChangeNotifierProvider(
   ),
 )
 ```
-* **Data request/response**. Model is a bridge between your data and UI. Each iteration with data should located inside model. Such as data fetching, data modification or observing of data changes.
+* **(3, 4) Data request/response**. Model is a bridge between your data and UI. Each iteration with data should located inside model. Such as data fetching, data modification or observing of data changes.
 
 **Note:** _Data_ means any data stream such as Networking, DB, Shared preferences or native device components like BLE. Also we recommend to use repository pattern. If needed you can store specific business logic inside components like Services, Use cases, Managers.
-* **UI Delegate**. It is component which handle side effects such as Navigation, Snackbars, Toasts, Errors. Please split delegate to interface and implementation classes. Only delegate implementation class contains `BuildContext`.
+* **(5) UI Delegate**. It is component which handle side effects such as Navigation, Snackbars, Toasts, Errors. Please split delegate to interface and implementation classes. Only delegate implementation class contains `BuildContext`.
 
 Delegate example:
 ```dart
@@ -78,12 +78,12 @@ BLoC (business logic component) is architecture pattern. BLoC is a simple pipeli
 We recommend to use [BLoC library](https://bloclibrary.dev/#/gettingstarted) which provide set of required widgets and base Bloc class.
 
 ![BLoC architecture](diagrams/bloc_diagram.png)
-* **States stream**. Use a `BlocBuilder` widget which contains subscription to state changes under the hood.
-* **Events stream**. Add new event from UI to Bloc object. Inside Bloc it event will be mapped to new state or state sequence.
+* **(1) States stream**. Use a `BlocBuilder` widget which contains subscription to state changes under the hood.
+* **(2) Events stream**. Add new event from UI to Bloc object. Inside Bloc it event will be mapped to new state or state sequence.
 
 **Note 1:** Use `BlocProvider` to creating new bloc instance. It widget cover lifecycle cases of widget. Be sure what your bloc instance will not be changed during next call of `build()` method.
 
 **Note 2:** Use `BlocListener` to notify UI about side effects. Also you can use `BlocConsumer` which combine `BlocBuilder` and `BlocListener`.
-* **Data request/response**. Data management is the same as a `Provider state management` which is described above.
+* **(3, 4) Data request/response**. Data management is the same as a `Provider state management` which is described above.
 
 **Note:** You can add new events directly from the block. It will be useful if you want to observe data changes.
