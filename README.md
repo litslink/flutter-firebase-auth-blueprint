@@ -24,14 +24,14 @@ The core of concept is combination of [Provider DI library](https://pub.dev/pack
 
 * **Call of method**. You have access to model methods from UI. Use `Consumer` widget to tie up your model and UI component.
 
-`ChangeNotifierProvider` + `Consumer` example:
+Example of `ChangeNotifierProvider` + `Consumer` combination:
 ```dart
 ChangeNotifierProvider(
   create: (context) => YourModel(),
   child: Consumer<YourModel>(
     builder: (_, model, __) {
       switch (model.state) {
-        //Return widget related to state type
+        //return widget related to state type
       }
     },
   ),
@@ -39,7 +39,7 @@ ChangeNotifierProvider(
 ```
 * **Data request/response**. Model is a bridge between your data and UI. Each iteration with data should located inside model. Such as data fetching, data modification or observing of data changes.
 
-**Note:** **Data** means any data stream such as Networking, DB, Shared preferences or native device components like BLE. Also we recommend to use repository pattern. If needed you can store specific business logic inside components like Services, Use cases, Managers.
+**Note:** _Data_ means any data stream such as Networking, DB, Shared preferences or native device components like BLE. Also we recommend to use repository pattern. If needed you can store specific business logic inside components like Services, Use cases, Managers.
 * **UI Delegate**. It is component which handle side effects such as Navigation, Snackbars, Toasts, Errors. Please split delegate to interface and implementation classes. Only delegate implementation class contains `BuildContext`.
 
 Delegate example:
@@ -82,6 +82,7 @@ We recommend to use [BLoC library](https://bloclibrary.dev/#/gettingstarted) whi
 * **Events stream**. Add new event from UI to Bloc object. Inside Bloc it event will be mapped to new state or state sequence.
 
 **Note 1:** Use `BlocProvider` to creating new bloc instance. It widget cover lifecycle cases of widget. Be sure what your bloc instance will not be changed during next call of `build()` method.
+
 **Note 2:** Use `BlocListener` to notify UI about side effects. Also you can use `BlocConsumer` which combine `BlocBuilder` and `BlocListener`.
 * **Data request/response**. Data management is the same as a `Provider state management` which is described above.
 
