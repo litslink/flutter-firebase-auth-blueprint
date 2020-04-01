@@ -6,14 +6,16 @@ Application contains following features:
 * User profile with edit mode. You can change username or photo. Firebase is used as remote storage. 
 * Each user has a remote config which is stored inside Firebase DB. Only one field is implemented now (notification on/off) but you can easily extend config.
 * Application can store users notes inside Firebase DB. CRUD operations are already implemented. You can reuse it. Just change the data model.
-## Repository structure
-Repository contains two different architecture approaches. There are `Provider state management` and `BLoC`. It was done to compare them. Each approach located inside separate package. Also `common` package contains common logic for each of them.
 ## Getting started
 Before run project you should:
 1. Create Firebase project which support DB, Storage and Auth services. 
 2. Generate `google-services.json` and `GoogleService-Info.plist`. 
 3. Move `google-services.json` to `/android/app` folder.
 4. Move `GoogleService-Info.plist` to `/ios/Runner` folders.
+
+[Article](https://medium.com/flutterpub/flutter-how-to-do-user-login-with-firebase-a6af760b14d5) with step by step Firebase set up.
+## Repository structure
+Repository consists of three packages. Two of them contains same logic but use different architecture approaches. There are `Provider state management`(`provider_approach` package) and `BLoC`(`bloc_approach`). It was done to compare them. Also `common` package store common logic for each of them.
 
 **Note:** Repository contains two Flutter projects. It is required for each of them.
 ## Provider state management
@@ -31,7 +33,7 @@ ChangeNotifierProvider(
   child: Consumer<YourModel>(
     builder: (_, model, __) {
       switch (model.state) {
-        //return widget related to state type
+        //return widget depend to state type
       }
     },
   ),
@@ -80,13 +82,29 @@ We recommend to use [BLoC library](https://bloclibrary.dev/#/gettingstarted) whi
 ![BLoC architecture](diagrams/bloc_diagram.png)
 * **(1) States stream**. Use a `BlocBuilder` widget which contains subscription to state changes under the hood.
 
-**Note:** You can use any type as a state. It can be `enum`, `String` or `abstract class`.
+**Note:** You can use any type as a state. It can be `enum`, primitive, `class` or `abstract class`.
 
 * **(2) Events stream**. Add new event from UI to Bloc object. Inside Bloc it event will be mapped to new state or state sequence.
 
 **Note 1:** Use `BlocProvider` to creating new bloc instance. It widget cover lifecycle cases of widget. Be sure what your bloc instance will not be changed during next call of `build()` method.
 
 **Note 2:** Use `BlocListener` to notify UI about side effects. Also you can use `BlocConsumer` which combine `BlocBuilder` and `BlocListener`.
+
+Example of `BlocConsumer` + `BlocProvider` combination:
+```dart
+BlocProvider(
+ create: (_) => YourBloc(),
+ child: BlocConsumer<SignInBloc, SignInState>(
+   listener: (context, state) {
+     //side effects
+   },
+   buildWhen: (context, state) => //filter side effects states which do not required widget changes,
+   builder: (context, state) {
+     //return widget depend to state type
+   },
+ ),
+)
+```
 
 **Note 3:** The same as a state, any type can be your event.
 
