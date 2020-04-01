@@ -79,11 +79,32 @@ We recommend to use [BLoC library](https://bloclibrary.dev/#/gettingstarted) whi
 
 ![BLoC architecture](diagrams/bloc_diagram.png)
 * **(1) States stream**. Use a `BlocBuilder` widget which contains subscription to state changes under the hood.
+
+**Note:** You can use any type as a state. It can be `enum`, `String` or `abstract class`.
+
 * **(2) Events stream**. Add new event from UI to Bloc object. Inside Bloc it event will be mapped to new state or state sequence.
 
 **Note 1:** Use `BlocProvider` to creating new bloc instance. It widget cover lifecycle cases of widget. Be sure what your bloc instance will not be changed during next call of `build()` method.
 
 **Note 2:** Use `BlocListener` to notify UI about side effects. Also you can use `BlocConsumer` which combine `BlocBuilder` and `BlocListener`.
+
+**Note 3:** The same as a state, any type can be your event.
+
 * **(3, 4) Data request/response**. Data management is the same as a `Provider state management` which is described above.
 
 **Note:** You can add new events directly from the block. It will be useful if you want to observe data changes.
+## Libraries stack
+* **Dependency injection**. Use [Provider](https://pub.dev/packages/provider) library which allow you to implement DI inside your application. It is member of `Flutter favorite`. It mean that package is recommended by official Flutter team.
+* [**Equatable**](https://pub.dev/packages/equatable). Forget about overriding of `hashCode` and `==` methods when you need to compare objects.
+* [**FlutterFire**](https://github.com/FirebaseExtended/flutterfire). It is list of packages for Firebase integration. Each package cover single Firebase service like Auth or Storage.
+* [**Google sign in**](https://pub.dev/packages/google_sign_in). It is extension for `firebase_auth` package from library named above which provide ability to sign in using Google account.
+
+## Code style
+We use [Effective Dart](https://dart.dev/guides/language/effective-dart) rules options. Also we use special `string-mode` rules to avoid unexpected issues related to type casting.
+```yaml
+analyzer:
+  exclude: [build/**]
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+```
