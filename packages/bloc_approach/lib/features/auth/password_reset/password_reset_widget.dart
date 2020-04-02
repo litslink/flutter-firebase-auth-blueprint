@@ -47,13 +47,18 @@ class PasswordResetWidget extends StatelessWidget {
               || state is Loading
               || state is ResetInstructionsDelivered,
           // ignore: missing_return
-          builder: (_, state) {
-            if (state is EmailInputForm) {
-              return _buildEmailInputForm(context);
-            } else if (state is Loading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is ResetInstructionsDelivered) {
-              return _buildConfirmation();
+          builder: (context, state) {
+            switch (state.runtimeType) {
+              case EmailInputForm:
+                return _buildEmailInputForm(context);
+
+              case Loading:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+
+              case ResetInstructionsDelivered:
+                return _buildConfirmation();
             }
           },
         ),
@@ -74,13 +79,15 @@ class PasswordResetWidget extends StatelessWidget {
               autofocus: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  hintText: 'Email',
-                  icon: Icon(
-                    Icons.phone,
-                    color: Colors.grey,
-                  )),
+                hintText: 'Email',
+                icon: Icon(
+                  Icons.phone,
+                  color: Colors.grey,
+                )
+              ),
               validator: (value) => value.isEmpty
-                  ? 'Email can\'t be empty' : null,
+                ? 'Email can\'t be empty'
+                : null,
               controller: _emailController,
             ),
           ),
@@ -91,17 +98,18 @@ class PasswordResetWidget extends StatelessWidget {
                 Expanded(
                   child: RaisedButton(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)
+                      borderRadius: BorderRadius.circular(30.0)
                     ),
                     color: Colors.blue,
                     child: Text('Submit',
-                        style: TextStyle(fontSize: 16, color: Colors.white)
+                      style: TextStyle(fontSize: 16, color: Colors.white)
                     ),
                     onPressed: () {
                       if (_emailFormKey.currentState.validate()) {
                         final email = _emailController.text;
-                        BlocProvider.of<PasswordResetBloc>(context)
-                            .add(SubmitEmail(email));
+                        BlocProvider.of<PasswordResetBloc>(context).add(
+                          SubmitEmail(email)
+                        );
                       }
                     },
                   ),
@@ -124,7 +132,7 @@ class PasswordResetWidget extends StatelessWidget {
             child: Icon(Icons.done, size: 24),
           ),
           Text('Please check your email',
-              style: TextStyle(fontSize: 16, color: Colors.black38)
+            style: TextStyle(fontSize: 16, color: Colors.black38)
           )
         ],
       ),
