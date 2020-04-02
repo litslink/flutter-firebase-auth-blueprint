@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/preview/profile_model.dart';
-import 'package:flutter_firebase_auth_blueprint/features/profile/preview/profile_router.dart';
+import 'package:flutter_firebase_auth_blueprint/features/profile/preview/profile_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/settings_repository.dart';
@@ -14,20 +14,12 @@ class ProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
     final settingsRepository = Provider.of<SettingsRepository>(context);
-    final router = ProfileRouterImpl(context);
+    final profileModel = ProfileModel(
+        authRepository, settingsRepository, ProfileDelegateImpl(context));
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: TextStyle(fontSize: 18, color: Colors.black),
-        ),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        actions: <Widget>[],
-      ),
+      appBar: _buildAppBar(profileModel),
       body: ChangeNotifierProvider(
-        create: (context) =>
-            ProfileModel(authRepository, settingsRepository, router),
+        create: (context) => profileModel,
         child: Consumer<ProfileModel>(
           builder: (key, model, child) {
             Widget view;
@@ -179,6 +171,28 @@ class ProfileWidget extends StatelessWidget {
                 'Logout',
                 style: TextStyle(fontSize: 18, color: Colors.redAccent),
               ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  AppBar _buildAppBar(ProfileModel model) {
+    return AppBar(
+      title: Text(
+        'Profile',
+        style: TextStyle(fontSize: 18, color: Colors.black),
+      ),
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+      actions: <Widget>[
+        FlatButton(
+          onPressed: model.editProfile,
+          child: Center(
+            child: Text(
+              'Edit',
+              style: TextStyle(fontSize: 16, color: Colors.blue),
             ),
           ),
         )

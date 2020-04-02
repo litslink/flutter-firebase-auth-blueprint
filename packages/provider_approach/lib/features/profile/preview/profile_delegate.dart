@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 
-// ignore: one_member_abstracts
-abstract class ProfileRouter {
+abstract class ProfileDelegate {
   void goToEditProfile();
 
   void goToSignIn();
 }
 
-class ProfileRouterImpl extends ProfileRouter {
+class ProfileDelegateImpl extends ProfileDelegate {
   final BuildContext context;
 
-  ProfileRouterImpl(this.context);
+  ProfileDelegateImpl(this.context);
 
   @override
   void goToEditProfile() =>
