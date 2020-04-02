@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../chat/chat_widget.dart';
+import '../notes/notes_widget.dart';
 import '../notification/notification_widget.dart';
 import '../profile/preview/profile_widget.dart';
 
@@ -22,7 +22,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget _getPage(int index) {
     switch (index) {
       case 0:
-        return ChatWidget();
+        return NotesWidget();
         break;
       case 1:
         return NotificationWidget();
@@ -31,7 +31,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         return ProfileWidget();
         break;
       default:
-        return ChatWidget();
+        return NotesWidget();
     }
   }
 
@@ -44,8 +44,8 @@ class _HomeWidgetState extends State<HomeWidget> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            title: Text('Chat'),
+            icon: Icon(Icons.note),
+            title: Text('Notes'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),

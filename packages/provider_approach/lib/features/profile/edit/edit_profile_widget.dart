@@ -16,7 +16,7 @@ class EditProfileWidget extends StatelessWidget {
     final authRepository = Provider.of<AuthRepository>(context);
     final imageManager = Provider.of<ImageManager>(context);
     final editProfileModel = EditProfileModel(authRepository,
-        EditProfileDelegateImpl(context), imageManager, NameValidator());
+        EditProfileDelegateImpl(context), imageManager, NotEmptyValidator());
     return Scaffold(
       appBar: _buildAppBar(context, editProfileModel),
       body: ChangeNotifierProvider(

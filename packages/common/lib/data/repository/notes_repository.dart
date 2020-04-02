@@ -28,27 +28,29 @@ class NotesRepository {
     await ref.remove();
   }
 
-  Stream<List<Note>> get(String userId) async* {
+  Stream<List<Note>> get(String userId) {
     final ref = _database.reference()
       .child(userId)
       .child('notes')
       .reference();
 
-    final isExist = (await ref.once()).value != null;
-    if (!isExist) {
-      yield [];
-    }
-    yield* ref.onValue.map((e) => _mapToList(e.snapshot));
+    return ref.onValue.map((e) => _mapToList(e.snapshot));
   }
 
-  List<Note> _mapToList(DataSnapshot snapshot) => (snapshot.value as Map)
-    .entries
-    .map<Note>(
-      (entry) => Note(
-        entry.key as String,
-        entry.value['title'] as String,
-        entry.value['text'] as String
+  List<Note> _mapToList(DataSnapshot snapshot) {
+    if (snapshot.value == null) {
+      return [];
+    } else {
+      return (snapshot.value as Map)
+        .entries
+        .map<Note>(
+          (entry) => Note(
+          entry.key as String,
+          entry.value['title'] as String,
+          entry.value['text'] as String
+        )
       )
-    )
-    .toList();
+        .toList();
+    }
+  }
 }

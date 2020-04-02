@@ -12,7 +12,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
   SignUpBloc(this.authRepository);
 
-  final _name = ValidationBloc(NameValidator());
+  final _name = ValidationBloc(NotEmptyValidator());
   final _email = ValidationBloc(EmailValidator());
   final _password = ValidationBloc(PasswordValidator());
   final _confirmPassword = ValidationBloc(PasswordValidator());

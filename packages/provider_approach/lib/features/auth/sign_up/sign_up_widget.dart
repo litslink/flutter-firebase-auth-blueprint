@@ -18,7 +18,7 @@ class SignUpWidget extends StatelessWidget {
         body: ChangeNotifierProvider(
           create: (context) => SignUpModel(
             authRepository,
-            NameValidator(),
+            NotEmptyValidator(),
             EmailValidator(),
             PasswordValidator(),
             SignUpDelegateImpl(context)
