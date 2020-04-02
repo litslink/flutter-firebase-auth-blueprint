@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/notes/new/new_note_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/notes/notes_event.dart';
 import 'package:flutter_firebase_auth_blueprint/features/notes/notes_state.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/note.dart';
@@ -21,7 +22,7 @@ class NotesWidget extends StatelessWidget {
       child: BlocConsumer<NotesBloc, NotesState>(
         listener: (_, state) {
           if (state is NewNoteRedirect) {
-
+            Navigator.of(context).pushNamed(NewNoteWidget.route);
           }
         },
         buildWhen: (_, state) => !(state is NewNoteRedirect),
