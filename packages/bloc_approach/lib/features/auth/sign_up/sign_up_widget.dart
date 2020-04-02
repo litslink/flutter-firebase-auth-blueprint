@@ -20,30 +20,44 @@ class SignUpWidget extends StatelessWidget {
         create: (_) => SignUpBloc(authRepository),
         child: BlocConsumer<SignUpBloc, SignUpState>(
           listener: (context, state) {
-            if (state is Authenticated) {
-              Navigator.of(context).popAndPushNamed(HomeWidget.route);
-            } else if (state is SignInRedirect) {
-              Navigator.of(context)
-                  .popAndPushNamed(SignInWidget.route);
-            } else if (state is AuthError) {
-              Scaffold.of(context).showSnackBar(
+            switch (state.runtimeType) {
+              case Authenticated:
+                Navigator.of(context).popAndPushNamed(HomeWidget.route);
+                break;
+
+              case SignInRedirect:
+                Navigator.of(context).popAndPushNamed(SignInWidget.route);
+                break;
+
+              case AuthError:
+                Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                        'Something went wrong. Check your internet connection'
+                      'Something went wrong. Check your internet connection'
                     ),
                   )
-              );
+                );
+                break;
             }
           },
           buildWhen: (_, state) => state is SignUpForm || state is Loading,
           // ignore: missing_return
           builder: (context, state) {
-            if (state is SignUpForm) {
-              return _buildSignUpForm(context,
-                  state.isNameValid, state.isEmailValid,
-                  state.isPasswordValid, state.isConfirmPasswordValid);
-            } else if (state is Loading) {
-              return Center(child: CircularProgressIndicator());
+            switch (state.runtimeType) {
+              case SignUpForm:
+                final formState = state as SignUpForm;
+                return _buildSignUpForm(
+                  context,
+                  formState.isNameValid,
+                  formState.isEmailValid,
+                  formState.isPasswordValid,
+                  formState.isConfirmPasswordValid
+                );
+
+              case Loading:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
             }
           },
         ),
@@ -51,9 +65,12 @@ class SignUpWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildSignUpForm(BuildContext context,
-      bool isNameValid, bool isEmailValid,
-      bool isPasswordValid, bool isConfirmPasswordValid) {
+  Widget _buildSignUpForm(
+    BuildContext context,
+    bool isNameValid,
+    bool isEmailValid,
+    bool isPasswordValid,
+    bool isConfirmPasswordValid) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,11 +88,14 @@ class SignUpWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 helperText: ' ',
-                errorText: isNameValid ? null : 'Name can not be empty',
+                errorText: isNameValid
+                  ? null
+                  : 'Name can not be empty',
             ),
             onChanged: (value) {
-              final event = NameChanged(value);
-              BlocProvider.of<SignUpBloc>(context).add(event);
+              BlocProvider.of<SignUpBloc>(context).add(
+                NameChanged(value)
+              );
             },
           ),
         ),
@@ -92,11 +112,14 @@ class SignUpWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 helperText: ' ',
-                errorText: isEmailValid ? null : 'Invalid email address',
+                errorText: isEmailValid
+                  ? null
+                  : 'Invalid email address',
             ),
             onChanged: (value) {
-              final event = EmailChanged(value);
-              BlocProvider.of<SignUpBloc>(context).add(event);
+              BlocProvider.of<SignUpBloc>(context).add(
+                EmailChanged(value)
+              );
             },
           ),
         ),
@@ -113,11 +136,14 @@ class SignUpWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 helperText: ' ',
-                errorText: isPasswordValid ? null : 'Password is too short',
+                errorText: isPasswordValid
+                  ? null
+                  : 'Password is too short',
             ),
             onChanged: (value) {
-              final event = PasswordChanged(value);
-              BlocProvider.of<SignUpBloc>(context).add(event);
+              BlocProvider.of<SignUpBloc>(context).add(
+                PasswordChanged(value)
+              );
             },
           ),
         ),
@@ -135,11 +161,13 @@ class SignUpWidget extends StatelessWidget {
                 ),
                 helperText: ' ',
                 errorText: isConfirmPasswordValid
-                    ? null : 'Passwords are not valid',
+                    ? null
+                  : 'Passwords are not valid',
             ),
             onChanged: (value) {
-              final event = ConfirmPasswordChanged(value);
-              BlocProvider.of<SignUpBloc>(context).add(event);
+              BlocProvider.of<SignUpBloc>(context).add(
+                ConfirmPasswordChanged(value)
+              );
             },
           ),
         ),
@@ -157,8 +185,9 @@ class SignUpWidget extends StatelessWidget {
                       style: TextStyle(fontSize: 16, color: Colors.white)
                   ),
                   onPressed: () {
-                    final event = SignUp();
-                    BlocProvider.of<SignUpBloc>(context).add(event);
+                    BlocProvider.of<SignUpBloc>(context).add(
+                      SignUp()
+                    );
                   },
                 ),
               ),
@@ -167,8 +196,9 @@ class SignUpWidget extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            final event = SignIn();
-            BlocProvider.of<SignUpBloc>(context).add(event);
+            BlocProvider.of<SignUpBloc>(context).add(
+              SignIn()
+            );
           },
           child: Text('or sign in',
               style: TextStyle(fontSize: 16, color: Colors.blue)

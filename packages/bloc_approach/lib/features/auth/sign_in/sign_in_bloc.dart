@@ -5,7 +5,6 @@ import 'package:flutter_firebase_auth_blueprint/data/util/validation/validation_
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_event.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_state.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
-import 'package:flutter_firebase_auth_blueprint_common/util/validation/validation_state.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
@@ -22,48 +21,62 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   @override
   Stream<SignInState> mapEventToState(SignInEvent event) async* {
-    if (event is EmailChanged) {
-      _email.add(event.email);
-      yield SignInForm(true, true);
-    } else if (event is PasswordChanged) {
-      _password.add(event.password);
-      yield SignInForm(true, true);
-    } else if (event is SignIn) {
-      yield Loading();
-      try {
-        if (_email.state is Valid && _password.state is Valid) {
-          await authRepository.signIn(
-              (_email.state as Valid).text,
-              (_password.state as Valid).text
-          );
-          yield Authenticated();
-        } else {
-          yield SignInForm(
-              _email.state is Valid,
-              _password.state is Valid
-          );
+    switch (event.runtimeType) {
+      case EmailChanged:
+        final email = (event as EmailChanged).email;
+        _email.add(email);
+        yield SignInForm(true, true);
+        break;
+
+      case PasswordChanged:
+        final password = (event as PasswordChanged).password;
+        _password.add(password);
+        yield SignInForm(true, true);
+        break;
+
+      case SignIn:
+        yield Loading();
+        try {
+          final isEmailValid = _email.isValid();
+          final isPasswordValid = _password.isValid();
+          if (isEmailValid && isPasswordValid) {
+            await authRepository.signIn(_email.text(), _password.text());
+            yield Authenticated();
+          } else {
+            yield SignInForm(isEmailValid, isPasswordValid);
+          }
+          // ignore: avoid_catches_without_on_clauses
+        } catch (e) {
+          print(e);
+          yield AuthError();
+          yield SignInForm(true, true);
         }
-      } catch (e) { // ignore: avoid_catches_without_on_clauses
-        print(e);
-        yield AuthError();
-        yield SignInForm(true, true);
-      }
-    } else if (event is SignInWithGoogle) {
-      yield Loading();
-      try {
-        await authRepository.signInWithGoogle();
-        yield Authenticated();
-      } catch (e) { // ignore: avoid_catches_without_on_clauses
-        print(e);
-        yield AuthError();
-        yield SignInForm(true, true);
-      }
-    } else if (event is SignInWithPhoneNumber) {
-      yield PhoneVerificationRedirect();
-    } else if (event is ResetPassword) {
-      yield ResetPasswordRedirect();
-    } else if (event is CreateAccount) {
-      yield CreateAccountRedirect();
+        break;
+
+      case SignInWithGoogle:
+        yield Loading();
+        try {
+          await authRepository.signInWithGoogle();
+          yield Authenticated();
+          // ignore: avoid_catches_without_on_clauses
+        } catch (e) {
+          print(e);
+          yield AuthError();
+          yield SignInForm(true, true);
+        }
+        break;
+
+      case SignInWithPhoneNumber:
+        yield PhoneVerificationRedirect();
+        break;
+
+      case ResetPassword:
+        yield ResetPasswordRedirect();
+        break;
+
+      case CreateAccount:
+        yield CreateAccountRedirect();
+        break;
     }
   }
 

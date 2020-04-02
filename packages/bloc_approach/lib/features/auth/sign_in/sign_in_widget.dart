@@ -22,34 +22,50 @@ class SignInWidget extends StatelessWidget {
         create: (_) => SignInBloc(authRepository),
         child: BlocConsumer<SignInBloc, SignInState>(
           listener: (context, state) {
-            if (state is Authenticated) {
-              Navigator.of(context).popAndPushNamed(HomeWidget.route);
-            } else if (state is PhoneVerificationRedirect) {
-              Navigator.of(context)
-                  .popAndPushNamed(PhoneVerificationWidget.route);
-            } else if (state is ResetPasswordRedirect) {
-              Navigator.of(context).pushNamed(PasswordResetWidget.route);
-            } else if (state is CreateAccountRedirect) {
-              Navigator.of(context)
-                  .popAndPushNamed(SignUpWidget.route);
-            } else if (state is AuthError) {
-              Scaffold.of(context).showSnackBar(
+            switch (state.runtimeType) {
+              case Authenticated:
+                Navigator.of(context).popAndPushNamed(HomeWidget.route);
+                break;
+
+              case PhoneVerificationRedirect:
+                Navigator.of(context).popAndPushNamed(PhoneVerificationWidget.route);
+                break;
+
+              case ResetPasswordRedirect:
+                Navigator.of(context).pushNamed(PasswordResetWidget.route);
+                break;
+
+              case CreateAccountRedirect:
+                Navigator.of(context).popAndPushNamed(SignUpWidget.route);
+                break;
+
+              case AuthError:
+                Scaffold.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                        'Something went wrong. Check your internet connection'
+                      'Something went wrong. Check your internet connection'
                     ),
                   )
-              );
+                );
+                break;
             }
           },
           buildWhen: (_, state) => state is SignInForm || state is Loading,
           // ignore: missing_return
           builder: (context, state) {
-            if (state is SignInForm) {
-              return _buildSignInForm(
-                  context, state.isEmailValid, state.isPasswordValid);
-            } else if (state is Loading) {
-              return Center(child: CircularProgressIndicator());
+            switch (state.runtimeType) {
+              case SignInForm:
+                final formState = state as SignInForm;
+                return _buildSignInForm(
+                  context,
+                  formState.isEmailValid,
+                  formState.isPasswordValid
+                );
+
+              case Loading:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
             }
           },
         ),
@@ -75,10 +91,14 @@ class SignInWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 helperText: ' ',
-                errorText: isEmailValid ? null : 'Invalid email address'
+                errorText: isEmailValid
+                  ? null
+                  : 'Invalid email address'
             ),
             onChanged: (value) {
-              BlocProvider.of<SignInBloc>(context).add(EmailChanged(value));
+              BlocProvider.of<SignInBloc>(context).add(
+                EmailChanged(value)
+              );
             },
           ),
         ),
@@ -95,10 +115,14 @@ class SignInWidget extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 helperText: ' ',
-                errorText: isPasswordValid ? null : 'Password is too short'
+                errorText: isPasswordValid
+                  ? null
+                  : 'Password is too short'
             ),
             onChanged: (value) {
-              BlocProvider.of<SignInBloc>(context).add(PasswordChanged(value));
+              BlocProvider.of<SignInBloc>(context).add(
+                PasswordChanged(value)
+              );
             },
           ),
         ),
@@ -126,8 +150,9 @@ class SignInWidget extends StatelessWidget {
         _buildAdditionSignInMethod(context),
         GestureDetector(
           onTap: () {
-            final event = CreateAccount();
-            BlocProvider.of<SignInBloc>(context).add(event);
+            BlocProvider.of<SignInBloc>(context).add(
+              CreateAccount()
+            );
           },
           child: Text('or create an account',
               style: TextStyle(fontSize: 16, color: Colors.blue)
@@ -137,11 +162,12 @@ class SignInWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () {
-                final event = ResetPassword();
-                BlocProvider.of<SignInBloc>(context).add(event);
+                BlocProvider.of<SignInBloc>(context).add(
+                  ResetPassword()
+                );
               },
               child:Text('Forgot your password?',
-                  style: TextStyle(fontSize: 14, color: Colors.black38)
+                  style: TextStyle(fontSize: 14, color: Colors.black38),
               ),
             )
         )
@@ -155,8 +181,9 @@ class SignInWidget extends StatelessWidget {
       children: <Widget>[
         GestureDetector(
           onTap: () {
-            final event = SignInWithGoogle();
-            BlocProvider.of<SignInBloc>(context).add(event);
+            BlocProvider.of<SignInBloc>(context).add(
+              SignInWithGoogle()
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -182,8 +209,9 @@ class SignInWidget extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            final event = SignInWithPhoneNumber();
-            BlocProvider.of<SignInBloc>(context).add(event);
+            BlocProvider.of<SignInBloc>(context).add(
+              SignInWithPhoneNumber()
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),

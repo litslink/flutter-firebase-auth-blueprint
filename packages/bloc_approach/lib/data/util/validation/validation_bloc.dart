@@ -19,4 +19,14 @@ class ValidationBloc extends Bloc<String, ValidationState> {
       yield Invalid();
     }
   }
+
+  bool isValid() => state is Valid;
+
+  String text() {
+    if (isValid()) {
+      return (state as Valid).text;
+    } else {
+      throw Exception('Text is not available for invalid state');
+    }
+  }
 }
