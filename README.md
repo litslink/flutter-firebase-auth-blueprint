@@ -13,11 +13,12 @@ Before run project you should:
 3. Move `google-services.json` to `/android/app` folder.
 4. Move `GoogleService-Info.plist` to `/ios/Runner` folders.
 
+**Note:** Repository contains two Flutter projects. It is required for each of them.
+
 [Article](https://medium.com/flutterpub/flutter-how-to-do-user-login-with-firebase-a6af760b14d5) with step by step Firebase set up.
 ## Repository structure
 Repository consists of three packages. Two of them contain the same logic but use different architecture approaches. There are `Provider state management`(`provider_approach` package) and `BLoC`(`bloc_approach`). It was done to compare them. Also `common` store common logic for each of them.
 
-**Note:** Repository contains two Flutter projects. It is required for each of them.
 ## Provider state management
 The core of the concept is a combination of [Provider DI library](https://pub.dev/packages/provider) and [ChangeNotifier mechanism](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple). Model is the main component which connect UI and data. Model instances should be independent to UI rebuild. Model lifecycle is equal to a widget state. Use `ChangeNotifierProvider` which saves model instances during the rebuild process.
 
