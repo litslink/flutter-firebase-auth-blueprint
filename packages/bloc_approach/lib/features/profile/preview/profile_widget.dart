@@ -13,7 +13,6 @@ import 'profile_event.dart';
 import 'profile_state.dart';
 
 class ProfileWidget extends StatelessWidget {
-
   static final String route = '/profile';
 
   @override
@@ -41,8 +40,9 @@ class ProfileWidget extends StatelessWidget {
                           arguments: state.user
                       ) as bool;
                       if (result != null && result) {
-                        BlocProvider.of<ProfileBloc>(context)
-                            .add(FetchProfileInfo());
+                        BlocProvider.of<ProfileBloc>(context).add(
+                          FetchProfileInfo()
+                        );
                       }
                     },
                     child: Center(
@@ -67,11 +67,18 @@ class ProfileWidget extends StatelessWidget {
           buildWhen: (_, state) => state is Loading || state is ProfileInfo,
           // ignore: missing_return
           builder: (_, state) {
-            if (state is Loading) {
-              return Center(child: CircularProgressIndicator(),);
-            } else if (state is ProfileInfo) {
-              return _ProfileInfoWidget(
-                  state.user, state.isNotificationEnabled);
+            switch (state.runtimeType) {
+              case ProfileInfo:
+                final infoState = (state as ProfileInfo);
+                return _ProfileInfoWidget(
+                  infoState.user,
+                  infoState.isNotificationEnabled
+                );
+
+              case Loading:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
             }
           },
         ),

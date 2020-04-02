@@ -4,7 +4,6 @@ import 'package:flutter_firebase_auth_blueprint/features/auth/password_reset/pas
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 
 class PasswordResetBloc extends Bloc<PasswordResetEvent, PasswordResetState> {
-
   final AuthRepository authRepository;
 
   PasswordResetBloc(this.authRepository);

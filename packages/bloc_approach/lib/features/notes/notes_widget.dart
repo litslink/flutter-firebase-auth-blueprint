@@ -42,12 +42,14 @@ class NotesWidget extends StatelessWidget {
                   ),
                 ),
               );
+
             case Loading:
               return Scaffold(
                 body: Center(
                   child: CircularProgressIndicator()
                 )
               );
+
             case Empty:
               return Scaffold(
                 floatingActionButton: _buildFAB(context),
@@ -55,6 +57,7 @@ class NotesWidget extends StatelessWidget {
                   child: Text('Empty notes. Please, add one'),
                 ),
               );
+
             case Error:
               return Scaffold(
                 floatingActionButton: _buildFAB(context),
@@ -86,7 +89,8 @@ class NotesWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(note.title, style: TextStyle(fontSize: 20, color: Colors.black),),
+                  child: Text(note.title,
+                    style: TextStyle(fontSize: 20, color: Colors.black),),
                 ),
                 IconButton(
                   onPressed: () {
@@ -103,7 +107,9 @@ class NotesWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(note.text, style: TextStyle(fontSize: 14, color: Colors.black38),)
+              child: Text(note.text,
+                style: TextStyle(fontSize: 14, color: Colors.black38),
+              )
             ),
           )
         ],
