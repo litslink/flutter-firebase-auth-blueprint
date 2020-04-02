@@ -9,14 +9,17 @@ import 'edit_profile_event.dart';
 import 'edit_profile_state.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
-
   final User user;
   final AuthRepository authRepository;
   final ImageManager imageLoader;
+
   User _currentUser;
   File _currentPhoto;
 
-  EditProfileBloc(this.user, this.authRepository, this.imageLoader) {
+  EditProfileBloc(
+    this.user,
+    this.authRepository,
+    this.imageLoader) {
     _currentUser = user;
   }
 
@@ -25,23 +28,30 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
 
   @override
   Stream<EditProfileState> mapEventToState(EditProfileEvent event) async* {
-    try {
-      if (event is NameChanged) {
+    switch (event.runtimeType) {
+      case NameChanged:
+        final name = (event as NameChanged).name;
         _currentUser = _currentUser.copyWith(
-            displayName: event.name
+          displayName: name
         );
-      } else if (event is PhotoChanged) {
-        _currentPhoto = event.photo;
-      } else if (event is ConfirmChanges) {
+        break;
+
+      case PhotoChanged:
+        _currentPhoto = (event as PhotoChanged).photo;
+        break;
+
+      case ConfirmChanges:
         yield Loading();
-        await _preparePhoto();
-        final containsChanges = await _applyChanges();
-        yield EditCompleted(containsChanges);
-      }
-    // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
-      print(e);
-      yield Error();
+        try {
+          await _preparePhoto();
+          final containsChanges = await _applyChanges();
+          yield EditCompleted(containsChanges);
+        // ignore: avoid_catches_without_on_clauses
+        } catch (e) {
+          print(e);
+          yield Error();
+        }
+        break;
     }
   }
 

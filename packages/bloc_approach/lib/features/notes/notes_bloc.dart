@@ -70,14 +70,12 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
     final userId = (await _authRepository.getUser()).id;
     _notesSubscription = _notesRepository.get(userId).listen(
       (notes) {
-        final event = NotesChanged(notes);
-        add(event);
+        add(NotesChanged(notes));
       },
       // ignore: avoid_types_on_closure_parameters
       onError: (Object error) {
         print(error);
-        final event = NotesFetchingThrowError();
-        add(event);
+        add(NotesFetchingThrowError());
       }
     );
   }

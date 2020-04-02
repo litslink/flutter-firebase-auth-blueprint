@@ -6,7 +6,6 @@ import 'profile_event.dart';
 import 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-
   final AuthRepository authRepository;
   final SettingsRepository settingsRepository;
 
@@ -17,21 +16,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
-    if (event is FetchProfileInfo) {
-      final user = await authRepository.getUser();
-      final isNotificationEnabled = await settingsRepository
-          .isNotificationEnabled(user.id);
-      yield ProfileInfo(user, isNotificationEnabled);
-    } else if (event is SignOut) {
-      yield Loading();
-      await authRepository.signOut();
-      yield AuthenticationRequired();
-    } else if (event is EnableNotification) {
-      final user = await authRepository.getUser();
-      settingsRepository.enableNotification(user.id);
-    } else if (event is DisableNotification) {
-      final user = await authRepository.getUser();
-      settingsRepository.disableNotification(user.id);
+    switch (event.runtimeType) {
+      case FetchProfileInfo:
+        final user = await authRepository.getUser();
+        final isNotificationEnabled = await settingsRepository.isNotificationEnabled(user.id);
+        yield ProfileInfo(user, isNotificationEnabled);
+        break;
+
+      case SignOut:
+        yield Loading();
+        await authRepository.signOut();
+        yield AuthenticationRequired();
+        break;
+
+      case EnableNotification:
+        final user = await authRepository.getUser();
+        settingsRepository.enableNotification(user.id);
+        break;
+
+      case DisableNotification:
+        final user = await authRepository.getUser();
+        settingsRepository.disableNotification(user.id);
+        break;
     }
   }
 }
