@@ -51,8 +51,6 @@ abstract class SignUpDelegate {
 
   void navigateToHome();
 
-  void navigateToSignIn();
-
   void showAuthError();
 }
 
@@ -65,9 +63,6 @@ class SignUpDelegateImpl extends SignUpDelegate {
   void navigateToHome() => Navigator.of(context).popAndPushNamed(HomeWidget.route);
 
   @override
-  void navigateToSignIn() => Navigator.of(context).popAndPushNamed(SignInWidget.route);
-
-  @override
   void showAuthError() => Scaffold.of(context).showSnackBar(
     SnackBar(
       content: Text('Something went wrong. Check your internet connection'),
@@ -75,10 +70,14 @@ class SignUpDelegateImpl extends SignUpDelegate {
   );
 }
 ```
+
+**Conclusion.** It is the easiest way to separate state management and UI. But model classes should extend `ChangeNotifier` which is part of Flutter. It can provide problems during testing. Also when the model gets more complex it’s hard to track when you should call `notifyListeners()`.
 ## BLoC state management.
 BLoC (business logic component) is an architecture pattern. BLoC is a simple pipeline with logic inside. It receives events from UI and provides stream of states back to UI.
 
 We recommend using the [BLoC library](https://bloclibrary.dev/#/gettingstarted) which provide a set of required widgets and base Bloc class.
+
+**Note:** Library is not strictly required. You can use a combination of Provider and RxDart. 
 
 ![BLoC architecture](diagrams/bloc_diagram.png)
 * **(1) States stream**. Use a `BlocBuilder` widget which contains subscriptions to state changes under the hood.
@@ -112,6 +111,8 @@ BlocProvider(
 * **(3, 4) Data request/response**. Data management is the same as a `Provider state management` which is described above.
 
 **Note:** You can add new events directly from the block. It will be useful if you want to observe data changes.
+
+**Conclusion.** `BLoC` looks like a better choice for your application. It is easy to test and scale. But experience with reactive streams is needed. Also sometimes it required a lot of boilerplate code.
 ## Libraries stack
 * **Dependency injection**. Use a [Provider](https://pub.dev/packages/provider) library which allows you to implement DI inside your application. It is a member of `Flutter favorite`. It means that the package is recommended by the official Flutter team.
 * [**Equatable**](https://pub.dev/packages/equatable). Forget about overriding of `hashCode` and `==` methods when you need to compare objects.
