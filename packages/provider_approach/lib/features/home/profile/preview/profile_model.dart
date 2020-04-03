@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_firebase_auth_blueprint/features/home/profile/preview/profile_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint/features/util/base_model.dart';
+import 'package:flutter_firebase_auth_blueprint_common/data/model/auth_state.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/settings_repository.dart';
@@ -13,11 +16,13 @@ class ProfileModel extends BaseModel<ViewState> {
   User _user;
   bool isNotificationsEnabled = false;
 
+  StreamSubscription _authSubscription;
+
   ProfileModel(
     this._authRepository,
     this._settingsRepository,
     this._delegate) {
-    loadUserInfo();
+    _observeAuthChanges();
   }
 
   User get user => _user;
@@ -25,19 +30,10 @@ class ProfileModel extends BaseModel<ViewState> {
   @override
   ViewState get initialState => ViewState.loading;
 
-  void loadUserInfo() async {
-    try {
-      _user = await _authRepository.getUser();
-      if (_user != null) {
-        isNotificationsEnabled =
-            await _settingsRepository.isNotificationEnabled(_user.id);
-        state = ViewState.userLoaded;
-      }
-      // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
-      print(e.toString());
-      state = ViewState.userLoaded;
-    }
+  @override
+  void dispose() {
+    _authSubscription?.cancel();
+    super.dispose();
   }
 
   void setNotificationsEnabled({bool value}) async {
@@ -71,4 +67,19 @@ class ProfileModel extends BaseModel<ViewState> {
   void editProfile() {
     _delegate.navigateToEditProfile(_user);
   }
-}
+
+  void _observeAuthChanges() {
+    _authSubscription = _authRepository.authState().listen(
+      _onAuthChanged,
+      onError: (Object error) {
+        print(error);
+        _delegate.showError();
+      });
+  }
+
+  void _onAuthChanged(AuthState authState) async {
+    if (authState is Authenticated) {
+      _user = authState.user;
+      state = ViewState.userLoaded;
+    }
+  }}

@@ -56,7 +56,7 @@ class EditProfileModel extends BaseModel<ViewState> {
         if (_newName != _user.displayName) {
           await _authRepository.updateUserName(_newName);
         }
-        _delegate.goToProfilePreview();
+        _delegate.closeScreen();
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         print(e.toString());

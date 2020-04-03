@@ -8,6 +8,8 @@ abstract class ProfileDelegate {
   void navigateToEditProfile(User user);
 
   void navigateToSignIn();
+
+  void showError();
 }
 
 class ProfileDelegateImpl extends ProfileDelegate {
@@ -20,4 +22,11 @@ class ProfileDelegateImpl extends ProfileDelegate {
 
   @override
   void navigateToSignIn() => Navigator.of(context).pushNamedAndRemoveUntil(SignInWidget.route, (route) => false);
+
+  @override
+  void showError() => Scaffold.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Something went wrong'),
+    )
+  );
 }
