@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_firebase_auth_blueprint/features/notes/new/new_note_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/notes/new_note_widget.dart';
+import 'package:flutter_firebase_auth_blueprint_common/data/model/note.dart';
 
 // ignore: one_member_abstracts
 abstract class NotesDelegate {
 
-  void navigateToNewNote();
+  Future<Note> navigateToNewNote();
 }
 
 class NotesDelegateImpl extends NotesDelegate {
@@ -13,5 +14,8 @@ class NotesDelegateImpl extends NotesDelegate {
   NotesDelegateImpl(this.context);
 
   @override
-  void navigateToNewNote() => Navigator.of(context).pushNamed(NewNoteWidget.route);
+  Future<Note> navigateToNewNote() async {
+    final note = await Navigator.of(context).pushNamed(NewNoteWidget.route) as Note;
+    return note;
+  }
 }

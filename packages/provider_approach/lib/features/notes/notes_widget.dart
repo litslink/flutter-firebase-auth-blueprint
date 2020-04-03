@@ -26,30 +26,32 @@ class NotesWidget extends StatelessWidget {
             case Content:
               final notes = (model.state as Content).notes;
               return Scaffold(
+                appBar: _buildAppBar(),
                 floatingActionButton: _buildFAB(model),
-                body: Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  child: ListView.builder(
-                    padding: EdgeInsets.all(8),
-                    itemCount: notes.length,
-                    itemBuilder: (_, index) => _buildListItem(model, notes[index])
-                  ),
+                body: ListView.builder(
+                  padding: EdgeInsets.all(8),
+                  itemCount: notes.length,
+                  itemBuilder: (_, index) => _buildListItem(model, notes[index])
                 ),
               );
             case Loading:
               return Scaffold(
+                appBar: _buildAppBar(),
                 body: Center(
                   child: CircularProgressIndicator()
                 )
               );
-            case Empty: return Scaffold(
-              floatingActionButton: _buildFAB(model),
-              body: Center(
-                child: Text('Empty notes. Please, add one'),
-              ),
-            );
+            case Empty:
+              return Scaffold(
+                appBar: _buildAppBar(),
+                floatingActionButton: _buildFAB(model),
+                body: Center(
+                  child: Text('Empty notes. Please, add one'),
+                ),
+              );
             case Error:
               return Scaffold(
+                appBar: _buildAppBar(),
                 floatingActionButton: _buildFAB(model),
                 body: Center(
                   child: Text('Something went wrong'),
@@ -66,6 +68,17 @@ class NotesWidget extends StatelessWidget {
     child: Icon(Icons.add),
   );
 
+  AppBar _buildAppBar() {
+    return AppBar(
+      title: Text(
+        'Notes',
+        style: TextStyle(fontSize: 18, color: Colors.black),
+      ),
+      automaticallyImplyLeading: false,
+      backgroundColor: Colors.white,
+    );
+  }
+
   Widget _buildListItem(NotesModel model, Note note) {
     return Card(
       child: Column(
@@ -75,20 +88,29 @@ class NotesWidget extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  child: Text(note.title, style: TextStyle(fontSize: 20, color: Colors.black),),
+                  child: Text(
+                    note.title,
+                    style: TextStyle(fontSize: 20, color: Colors.black),
+                  ),
                 ),
                 IconButton(
                   onPressed: () => model.deleteNote(note),
-                  icon: Icon(Icons.delete),
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.black38,
+                  ),
                 )
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(note.text, style: TextStyle(fontSize: 14, color: Colors.black38),)
+              child: Text(
+                note.text,
+                style: TextStyle(fontSize: 14, color: Colors.black38),
+              ),
             ),
           )
         ],

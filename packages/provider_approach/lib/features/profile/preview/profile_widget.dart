@@ -30,7 +30,10 @@ class ProfileWidget extends StatelessWidget {
                 break;
               case ViewState.userLoaded:
                 view = _buildProfileScreen(
-                    context, model, model.isNotificationsEnabled);
+                  context,
+                  model,
+                  model.isNotificationsEnabled
+                );
                 break;
               case ViewState.signOut:
                 view = _buildLoading();

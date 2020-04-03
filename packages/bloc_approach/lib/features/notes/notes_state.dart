@@ -13,5 +13,3 @@ class Content extends NotesState {
 
   Content(this.notes);
 }
-
-class NewNoteRedirect extends NotesState {}
