@@ -4,7 +4,7 @@ import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/settings_repository.dart';
 
-enum ViewState { userLoaded, loading, signOut }
+enum ViewState { userLoaded, loading }
 
 class ProfileModel extends BaseModel<ViewState> {
   final AuthRepository _authRepository;
@@ -13,7 +13,12 @@ class ProfileModel extends BaseModel<ViewState> {
   User _user;
   bool isNotificationsEnabled = false;
 
-  ProfileModel(this._authRepository, this._settingsRepository, this._delegate);
+  ProfileModel(
+    this._authRepository,
+    this._settingsRepository,
+    this._delegate) {
+    loadUserInfo();
+  }
 
   User get user => _user;
 
@@ -44,7 +49,7 @@ class ProfileModel extends BaseModel<ViewState> {
         await _settingsRepository.disableNotification(_user.id);
         isNotificationsEnabled = false;
       }
-      // ignore: avoid_catches_without_on_clauses
+    // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       state = ViewState.userLoaded;
     }
@@ -52,16 +57,17 @@ class ProfileModel extends BaseModel<ViewState> {
 
   void logOut() async {
     try {
-      state = ViewState.signOut;
-      await _authRepository.signOut();
-      _delegate.goToSignIn();
-      // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
       state = ViewState.loading;
+      await _authRepository.signOut();
+      _delegate.navigateToSignIn();
+    // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      print(e);
+      state = ViewState.userLoaded;
     }
   }
 
   void editProfile() {
-    _delegate.goToEditProfile();
+    _delegate.navigateToEditProfile(_user);
   }
 }
