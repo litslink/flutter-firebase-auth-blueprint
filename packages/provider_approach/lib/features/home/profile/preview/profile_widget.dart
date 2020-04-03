@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_firebase_auth_blueprint/features/home/profile/preview/profile_model.dart';
-import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
+import 'package:flutter_firebase_auth_blueprint/features/util/avatar.dart';
 import 'package:provider/provider.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -40,7 +40,7 @@ class ProfileWidget extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 24),
-              child: _buildAvatar(model.user),
+              child: Avatar(model.user, 50),
             )
           ],
         ),
@@ -184,29 +184,5 @@ class ProfileWidget extends StatelessWidget {
         )
       ],
     );
-  }
-
-  Widget _buildAvatar(User user) {
-    if (user.photoUrl != null) {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(user.photoUrl),
-        radius: 50,
-      );
-    } else {
-      return CircleAvatar(
-        child: Text(provideInitial(user)),
-        radius: 50,
-      );
-    }
-  }
-
-  String provideInitial(User user) {
-    if (user.displayName != null && user.displayName.isNotEmpty) {
-      return user.displayName[0];
-    } else if (user.email != null && user.email.isNotEmpty) {
-      return user.email[0];
-    } else {
-      return '';
-    }
   }
 }

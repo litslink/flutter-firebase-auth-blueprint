@@ -44,8 +44,9 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         yield Loading();
         try {
           await _preparePhoto();
-          final containsChanges = await _applyChanges();
-          yield EditCompleted(containsChanges);
+          await authRepository.updateUserName(_currentUser.displayName);
+          await authRepository.updatePhotoUrl(_currentUser.photoUrl);
+          yield EditCompleted();
         // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           print(e);
@@ -53,15 +54,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
         }
         break;
     }
-  }
-
-  Future<bool> _applyChanges() async {
-    var containsChanges = false;
-    containsChanges |= await authRepository
-        .updateUserName(_currentUser.displayName);
-    containsChanges |= await authRepository
-        .updatePhotoUrl(_currentUser.photoUrl);
-    return containsChanges;
   }
 
   Future<void> _preparePhoto() async {

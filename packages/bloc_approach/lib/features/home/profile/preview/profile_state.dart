@@ -13,3 +13,9 @@ class ProfileInfo extends ProfileState {
 }
 
 class AuthenticationRequired extends ProfileState {}
+
+class EditProfileRedirect extends ProfileState {
+  final User user;
+
+  EditProfileRedirect(this.user);
+}

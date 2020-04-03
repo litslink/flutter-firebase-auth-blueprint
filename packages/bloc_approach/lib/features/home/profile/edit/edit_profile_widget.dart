@@ -34,7 +34,7 @@ class _EditProfileState extends State<EditProfileWidget> {
       child: BlocConsumer<EditProfileBloc, EditProfileState>(
         listener: (_, state) {
           if (state is EditCompleted) {
-            Navigator.of(context).pop(state.containsChanges);
+            Navigator.of(context).pop();
           }
         },
         buildWhen: (_, state) => state is Loading

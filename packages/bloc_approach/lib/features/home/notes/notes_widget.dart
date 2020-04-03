@@ -1,49 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/notes/mini_profile_bloc.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/notes/new_note_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/notes/notes_state.dart';
 import 'package:flutter_firebase_auth_blueprint/features/util/avatar.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/note.dart';
-import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
-import 'package:provider/provider.dart';
 
-import 'notes_model.dart';
+import 'notes_bloc.dart';
+import 'notes_event.dart';
 
 class NotesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<NotesModel>(
+    return BlocBuilder<NotesBloc, NotesState>(
       // ignore: missing_return
-      builder: (_, model, __) {
-        switch (model.state.runtimeType) {
+      builder: (context, state) {
+        switch (state.runtimeType) {
           case Content:
-            final notes = (model.state as Content).notes;
+            final notes = (state as Content).notes;
             return Scaffold(
-              appBar: _buildAppBar(model.user),
-              floatingActionButton: _buildFAB(model),
+              appBar: _buildAppBar(),
+              floatingActionButton: _buildFAB(context),
               body: ListView.builder(
                 padding: EdgeInsets.all(8),
                 itemCount: notes.length,
-                itemBuilder: (_, index) => _buildListItem(model, notes[index])
+                itemBuilder: (_, index) => _buildListItem(context, notes[index])
               ),
             );
+
           case Loading:
             return Scaffold(
               body: Center(
                 child: CircularProgressIndicator()
               )
             );
+
           case Empty:
             return Scaffold(
-              appBar: _buildAppBar(model.user),
-              floatingActionButton: _buildFAB(model),
+              appBar: _buildAppBar(),
+              floatingActionButton: _buildFAB(context),
               body: Center(
                 child: Text('Empty notes. Please, add one'),
               ),
             );
+
           case Error:
             return Scaffold(
-              appBar: _buildAppBar(model.user),
-              floatingActionButton: _buildFAB(model),
+              appBar: _buildAppBar(),
+              floatingActionButton: _buildFAB(context),
               body: Center(
                 child: Text('Something went wrong'),
               ),
@@ -53,12 +59,7 @@ class NotesWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildFAB(NotesModel model) => FloatingActionButton(
-    onPressed: model.addNote,
-    child: Icon(Icons.add),
-  );
-
-  AppBar _buildAppBar(User user) {
+  AppBar _buildAppBar() {
     return AppBar(
       title: Text(
         'Notes',
@@ -69,13 +70,37 @@ class NotesWidget extends StatelessWidget {
       actions: <Widget>[
         Padding(
           padding: EdgeInsets.all(8),
-          child: Avatar(user, 20)
+          child: BlocBuilder<MiniProfileBloc, MiniProfileState>(
+            // ignore: missing_return
+            builder: (_, state) {
+              switch (state.runtimeType) {
+                case ProfileInfo:
+                  final user = (state as ProfileInfo).user;
+                  return Avatar(user, 20);
+
+                case EmptyUser:
+                  return Container();
+              }
+            },
+          )
         ),
       ],
     );
   }
 
-  Widget _buildListItem(NotesModel model, Note note) {
+  Widget _buildFAB(BuildContext context) => FloatingActionButton(
+    onPressed: () async {
+      final note = await Navigator.of(context).pushNamed(NewNoteWidget.route) as Note;
+      if (note != null) {
+        BlocProvider.of<NotesBloc>(context).add(
+          NewNote(note)
+        );
+      }
+    },
+    child: Icon(Icons.add),
+  );
+
+  Widget _buildListItem(BuildContext context, Note note) {
     return Card(
       child: Column(
         children: <Widget>[
@@ -90,7 +115,11 @@ class NotesWidget extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => model.deleteNote(note),
+                  onPressed: () {
+                    BlocProvider.of<NotesBloc>(context).add(
+                      DeleteNote(note)
+                    );
+                  },
                   icon: Icon(
                     Icons.delete,
                     color: Colors.black38,
