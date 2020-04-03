@@ -1,4 +1,4 @@
-import 'package:flutter_firebase_auth_blueprint/features/profile/preview/profile_delegate.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/profile/preview/profile_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint/features/util/base_model.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_delegate.dart';
-import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_model.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/image_manager.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
+import 'edit_profile_delegate.dart';
+import 'edit_profile_model.dart';
 
 class EditProfileWidget extends StatelessWidget {
   static final String route = '/edit_profile';

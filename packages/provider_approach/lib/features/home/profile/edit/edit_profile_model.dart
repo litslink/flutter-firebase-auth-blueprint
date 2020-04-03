@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint/features/util/base_model.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/image_manager.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
+
+import 'edit_profile_delegate.dart';
 
 enum ViewState { profileInfo, loading}
 

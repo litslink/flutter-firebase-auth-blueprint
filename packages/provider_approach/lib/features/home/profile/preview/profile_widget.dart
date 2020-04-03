@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_firebase_auth_blueprint/features/profile/preview/profile_model.dart';
-import 'package:flutter_firebase_auth_blueprint/features/profile/preview/profile_delegate.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/profile/preview/profile_model.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
-import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
-import 'package:flutter_firebase_auth_blueprint_common/data/repository/settings_repository.dart';
 import 'package:provider/provider.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -12,33 +9,24 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = Provider.of<AuthRepository>(context);
-    final settingsRepository = Provider.of<SettingsRepository>(context);
-    return ChangeNotifierProvider(
-      create: (context) =>  ProfileModel(
-        authRepository,
-        settingsRepository,
-        ProfileDelegateImpl(context)
-      ),
-      child: Consumer<ProfileModel>(
-        builder: (key, model, child) {
-          Widget view;
-          switch (model.state) {
-            case ViewState.loading:
-              view = Scaffold(body: _buildLoading());
-              break;
+    return Consumer<ProfileModel>(
+      builder: (key, model, child) {
+        Widget view;
+        switch (model.state) {
+          case ViewState.loading:
+            view = Scaffold(body: _buildLoading());
+            break;
 
-            case ViewState.userLoaded:
-              view = Scaffold(
-                appBar: _buildAppBar(model),
-                body: _buildProfileScreen(model),
-              );
-              break;
+          case ViewState.userLoaded:
+            view = Scaffold(
+              appBar: _buildAppBar(model),
+              body: _buildProfileScreen(model),
+            );
+            break;
 
-          }
-          return view;
-        },
-      ),
+        }
+        return view;
+      },
     );
   }
 

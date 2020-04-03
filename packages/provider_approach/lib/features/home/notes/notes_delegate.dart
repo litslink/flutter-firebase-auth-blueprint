@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_firebase_auth_blueprint/features/notes/new_note_widget.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/note.dart';
+
+import 'new_note_widget.dart';
 
 // ignore: one_member_abstracts
 abstract class NotesDelegate {
