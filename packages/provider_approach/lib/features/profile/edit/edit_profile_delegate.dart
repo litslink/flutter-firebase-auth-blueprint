@@ -13,11 +13,12 @@ class EditProfileDelegateImpl extends EditProfileDelegate {
   EditProfileDelegateImpl(this.context);
 
   @override
-  void showEditError() => Scaffold.of(context).showSnackBar(SnackBar(
+  void showEditError() => Scaffold.of(context).showSnackBar(
+    SnackBar(
         content: Text('Profile update failed'),
-      ));
+    )
+  );
 
   @override
-  void goToProfilePreview() =>
-      Navigator.of(context).pushReplacementNamed(ProfileWidget.route);
+  void goToProfilePreview() => Navigator.of(context).pushReplacementNamed(ProfileWidget.route);
 }

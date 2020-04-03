@@ -2,7 +2,11 @@ import 'package:flutter_firebase_auth_blueprint_common/data/model/note.dart';
 
 abstract class NotesEvent {}
 
-class NewNote extends NotesEvent {}
+class NewNote extends NotesEvent {
+  final Note note;
+
+  NewNote(this.note);
+}
 
 class DeleteNote extends NotesEvent {
   final Note note;

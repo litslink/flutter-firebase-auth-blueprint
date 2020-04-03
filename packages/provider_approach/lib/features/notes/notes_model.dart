@@ -44,18 +44,17 @@ class NotesModel extends BaseModel<ViewState> {
     super.dispose();
   }
 
-  void addNote() {
-    _delegate.navigateToNewNote();
+  void addNote() async {
+    final note = await _delegate.navigateToNewNote();
+    if (note != null) {
+      final userId = (await _authRepository.getUser()).id;
+      await _notesRepository.add(userId, note);
+    }
   }
 
   void deleteNote(Note note) async {
     final userId = (await _authRepository.getUser()).id;
     await _notesRepository.delete(userId, note);
-
-    //TODO HOT FIX
-    if (state is Content && (state as Content).notes.length == 1) {
-      state = Empty();
-    }
   }
 
   void _observeNotes() async {

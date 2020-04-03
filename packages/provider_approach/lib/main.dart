@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_up/sign_up_widget.dart';
-import 'package:flutter_firebase_auth_blueprint/features/notes/new/new_note_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/notes/new_note_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
 import 'package:provider/provider.dart';
 

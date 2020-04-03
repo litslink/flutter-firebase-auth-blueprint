@@ -6,20 +6,24 @@ import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repo
 import 'package:flutter_firebase_auth_blueprint_common/util/image_manager.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 
-enum ViewState { userLoaded, loading}
+enum ViewState { profileInfo, loading}
 
 class EditProfileModel extends BaseModel<ViewState> {
   final AuthRepository _authRepository;
   final EditProfileDelegate _delegate;
   final ImageManager _imageManager;
   final Validator _nameValidator;
-  User _user;
+  final User _user;
   String _newName;
   bool _isNewNameValid = true;
   File _pickedPhoto;
 
-  EditProfileModel(this._authRepository, this._delegate, this._imageManager,
-      this._nameValidator);
+  EditProfileModel(
+    this._user,
+    this._authRepository,
+    this._delegate,
+    this._imageManager,
+    this._nameValidator);
 
   File get pickedPhoto => _pickedPhoto;
 
@@ -28,7 +32,7 @@ class EditProfileModel extends BaseModel<ViewState> {
   User get user => _user;
 
   @override
-  ViewState get initialState => ViewState.loading;
+  ViewState get initialState => ViewState.profileInfo;
 
   void nameChanged(String newName) {
     _newName = newName;
@@ -36,20 +40,6 @@ class EditProfileModel extends BaseModel<ViewState> {
       notify(() {
         _isNewNameValid = true;
       });
-    }
-  }
-
-  void loadUserInfo() async {
-    try {
-      _user = await _authRepository.getUser();
-      _newName = _user.displayName;
-      if (_user != null) {
-        state = ViewState.userLoaded;
-      }
-      // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
-      print(e.toString());
-      state = ViewState.userLoaded;
     }
   }
 
@@ -70,7 +60,7 @@ class EditProfileModel extends BaseModel<ViewState> {
       } catch (e) {
         print(e.toString());
         _delegate.showEditError();
-        state = ViewState.userLoaded;
+        state = ViewState.profileInfo;
       }
     }
   }

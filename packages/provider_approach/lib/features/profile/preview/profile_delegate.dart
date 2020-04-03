@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
+import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 
 abstract class ProfileDelegate {
-  void goToEditProfile();
 
-  void goToSignIn();
+  void navigateToEditProfile(User user);
+
+  void navigateToSignIn();
 }
 
 class ProfileDelegateImpl extends ProfileDelegate {
@@ -14,10 +16,8 @@ class ProfileDelegateImpl extends ProfileDelegate {
   ProfileDelegateImpl(this.context);
 
   @override
-  void goToEditProfile() =>
-      Navigator.of(context).pushNamed(EditProfileWidget.route);
+  void navigateToEditProfile(User user) => Navigator.of(context).pushNamed(EditProfileWidget.route, arguments: user);
 
   @override
-  void goToSignIn() => Navigator.of(context)
-      .pushNamedAndRemoveUntil(SignInWidget.route, (route) => false);
+  void navigateToSignIn() => Navigator.of(context).pushNamedAndRemoveUntil(SignInWidget.route, (route) => false);
 }

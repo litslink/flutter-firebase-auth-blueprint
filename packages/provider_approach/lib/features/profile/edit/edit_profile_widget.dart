@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_model.dart';
+import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/image_manager.dart';
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
@@ -13,34 +14,43 @@ class EditProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = ModalRoute.of(context).settings.arguments as User;
     final authRepository = Provider.of<AuthRepository>(context);
     final imageManager = Provider.of<ImageManager>(context);
-    final editProfileModel = EditProfileModel(authRepository,
-        EditProfileDelegateImpl(context), imageManager, NotEmptyValidator());
-    return Scaffold(
-      appBar: _buildAppBar(context, editProfileModel),
-      body: ChangeNotifierProvider(
-        create: (context) => editProfileModel,
-        child: Consumer<EditProfileModel>(
-          builder: (key, model, child) {
-            Widget view;
-            switch (model.state) {
-              case ViewState.userLoaded:
-                view = _buildProfileInfo(context, editProfileModel);
-                break;
-              case ViewState.loading:
-                view = _buildLoading();
-                model.loadUserInfo();
-                break;
-            }
-            return view;
-          },
-        ),
+    return ChangeNotifierProvider(
+      create: (context) => EditProfileModel(
+        user,
+        authRepository,
+        EditProfileDelegateImpl(context),
+        imageManager,
+        NotEmptyValidator()
+      ),
+      child: Consumer<EditProfileModel>(
+        builder: (key, model, child) {
+          Widget view;
+          switch (model.state) {
+            case ViewState.profileInfo:
+              view = Scaffold(
+                appBar: _buildAppBar(context, model),
+                body: _buildProfileInfo(context, model)
+              );
+              break;
+
+            case ViewState.loading:
+              view = Scaffold(
+                body: _buildLoading()
+              );
+              break;
+          }
+          return view;
+        },
       ),
     );
   }
 
-  Widget _buildLoading() => Center(child: CircularProgressIndicator());
+  Widget _buildLoading() => Center(
+    child: CircularProgressIndicator(),
+  );
 
   Widget _buildProfileInfo(BuildContext context, EditProfileModel model) {
     return ListView(
@@ -50,8 +60,7 @@ class EditProfileWidget extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () async {
-                  final result =
-                      await ImagePicker.pickImage(source: ImageSource.gallery);
+                  final result = await ImagePicker.pickImage(source: ImageSource.gallery);
                   if (result != null) {
                     model.pickPhoto(result);
                   }

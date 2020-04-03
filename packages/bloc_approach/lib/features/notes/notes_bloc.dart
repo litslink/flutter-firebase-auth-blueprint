@@ -25,7 +25,6 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   Stream<NotesState> mapEventToState(NotesEvent event) async* {
     switch (event.runtimeType) {
       case NewNote:
-        yield NewNoteRedirect();
         break;
 
       case DeleteNote:

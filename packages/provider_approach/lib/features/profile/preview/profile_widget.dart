@@ -14,39 +14,37 @@ class ProfileWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
     final settingsRepository = Provider.of<SettingsRepository>(context);
-    final profileModel = ProfileModel(
-        authRepository, settingsRepository, ProfileDelegateImpl(context));
-    return Scaffold(
-      appBar: _buildAppBar(profileModel),
-      body: ChangeNotifierProvider(
-        create: (context) => profileModel,
-        child: Consumer<ProfileModel>(
-          builder: (key, model, child) {
-            Widget view;
-            switch (model.state) {
-              case ViewState.loading:
-                view = _buildLoading();
-                model.loadUserInfo();
-                break;
-              case ViewState.userLoaded:
-                view = _buildProfileScreen(
-                    context, model, model.isNotificationsEnabled);
-                break;
-              case ViewState.signOut:
-                view = _buildLoading();
-                break;
-            }
-            return view;
-          },
-        ),
+    return ChangeNotifierProvider(
+      create: (context) =>  ProfileModel(
+        authRepository,
+        settingsRepository,
+        ProfileDelegateImpl(context)
+      ),
+      child: Consumer<ProfileModel>(
+        builder: (key, model, child) {
+          Widget view;
+          switch (model.state) {
+            case ViewState.loading:
+              view = Scaffold(body: _buildLoading());
+              break;
+
+            case ViewState.userLoaded:
+              view = Scaffold(
+                appBar: _buildAppBar(model),
+                body: _buildProfileScreen(model),
+              );
+              break;
+
+          }
+          return view;
+        },
       ),
     );
   }
 
   Widget _buildLoading() => Center(child: CircularProgressIndicator());
 
-  Widget _buildProfileScreen(
-      BuildContext context, ProfileModel model, bool isNotificationsEnabled) {
+  Widget _buildProfileScreen(ProfileModel model) {
     return ListView(
       children: <Widget>[
         Row(
@@ -151,7 +149,7 @@ class ProfileWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Switch(
-                      value: isNotificationsEnabled,
+                      value: model.isNotificationsEnabled,
                       onChanged: (value) {
                         model.setNotificationsEnabled(value: value);
                       },
