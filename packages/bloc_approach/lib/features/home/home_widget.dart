@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../notes/notes_widget.dart';
-import '../notification/notification_widget.dart';
 import '../profile/preview/profile_widget.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -13,27 +12,18 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   int _selectedIndex = 0;
 
+  final _pages = {
+    0: NotesWidget(),
+    1: ProfileWidget()
+  };
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return NotesWidget();
-        break;
-      case 1:
-        return NotificationWidget();
-        break;
-      case 2:
-        return ProfileWidget();
-        break;
-      default:
-        return NotesWidget();
-    }
-  }
+  Widget _getPage(int index) => _pages[index] ?? NotesWidget();
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +36,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.note),
             title: Text('Notes'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            title: Text('Notifications'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_firebase_auth_blueprint/features/notes/notes_widget.dart';
-import '../notification/notification_widget.dart';
 import '../profile/preview/profile_widget.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -15,8 +14,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   final _pages = {
     0: NotesWidget(),
-    1: NotificationWidget(),
-    2: ProfileWidget()
+    1: ProfileWidget()
   };
 
   void _onItemTapped(int index) {
@@ -38,10 +36,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.note),
             title: Text('Notes'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            title: Text('Notifications'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
