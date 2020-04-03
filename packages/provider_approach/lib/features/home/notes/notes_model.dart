@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter_firebase_auth_blueprint/features/notes/notes_delegate.dart';
 import 'package:flutter_firebase_auth_blueprint/features/util/base_model.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/note.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/notes_repository.dart';
+
+import 'notes_delegate.dart';
 
 abstract class ViewState {}
 
