@@ -1,10 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:flutter_firebase_auth_blueprint/features/notes/notes_event.dart';
-import 'package:flutter_firebase_auth_blueprint/features/notes/notes_state.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/notes/notes_state.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/repository/notes_repository.dart';
+
+import 'notes_event.dart';
 
 class NotesBloc extends Bloc<NotesEvent, NotesState> {
   final NotesRepository _notesRepository;

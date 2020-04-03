@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_auth_blueprint/features/auth/sign_in/sign_in_widget.dart';
-import 'package:flutter_firebase_auth_blueprint/features/profile/edit/edit_profile_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/home/profile/edit/edit_profile_widget.dart';
+import 'package:flutter_firebase_auth_blueprint/features/util/avatar.dart';
 import 'package:flutter_firebase_auth_blueprint_common/data/model/user.dart';
-import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repository.dart';
-import 'package:flutter_firebase_auth_blueprint_common/data/repository/settings_repository.dart';
-import 'package:provider/provider.dart';
 
 import 'profile_bloc.dart';
 import 'profile_event.dart';
@@ -17,71 +15,65 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = Provider.of<AuthRepository>(context);
-    final settingsRepository = Provider.of<SettingsRepository>(context);
-    return BlocProvider(
-      create: (_) => ProfileBloc(authRepository, settingsRepository)
-        ..add(FetchProfileInfo()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Profile',
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          actions: <Widget>[
-            BlocBuilder<ProfileBloc, ProfileState>(
-              builder: (context, state) {
-                if (state is ProfileInfo) {
-                  return FlatButton(
-                    onPressed: () async {
-                      final result = await Navigator.of(context).pushNamed(
-                          EditProfileWidget.route,
-                          arguments: state.user
-                      ) as bool;
-                      if (result != null && result) {
-                        BlocProvider.of<ProfileBloc>(context).add(
-                          FetchProfileInfo()
-                        );
-                      }
-                    },
-                    child: Center(
-                      child: Text('Edit',
-                        style: TextStyle(fontSize: 16, color: Colors.blue),
-                      ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile',
+          style: TextStyle(fontSize: 18, color: Colors.black),
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        actions: <Widget>[
+          BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileInfo) {
+                return FlatButton(
+                  onPressed: () {
+                    BlocProvider.of<ProfileBloc>(context).add(
+                      EditProfile()
+                    );
+                  },
+                  child: Center(
+                    child: Text('Edit',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
                     ),
-                  );
-                } else {
-                  return Container(height: 0, width: 0);
-                }
-              },
-            )
-          ],
-        ),
-        body: BlocConsumer<ProfileBloc, ProfileState>(
-          listener: (_, state) {
-            if (state is AuthenticationRequired) {
+                  ),
+                );
+              } else {
+                return Container(height: 0, width: 0);
+              }
+            },
+          )
+        ],
+      ),
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (_, state) {
+          switch (state.runtimeType) {
+            case AuthenticationRequired:
               Navigator.of(context).popAndPushNamed(SignInWidget.route);
-            }
-          },
-          buildWhen: (_, state) => state is Loading || state is ProfileInfo,
-          // ignore: missing_return
-          builder: (_, state) {
-            switch (state.runtimeType) {
-              case ProfileInfo:
-                final infoState = (state as ProfileInfo);
-                return _ProfileInfoWidget(
-                  infoState.user,
-                  infoState.isNotificationEnabled
-                );
+              break;
+            case EditProfileRedirect:
+              final user = (state as EditProfileRedirect).user;
+              Navigator.of(context).pushNamed(EditProfileWidget.route, arguments: user);
+              break;
+          }
+        },
+        buildWhen: (_, state) => state is Loading || state is ProfileInfo,
+        // ignore: missing_return
+        builder: (_, state) {
+          switch (state.runtimeType) {
+            case ProfileInfo:
+              final infoState = (state as ProfileInfo);
+              return _ProfileInfoWidget(
+                infoState.user,
+                infoState.isNotificationEnabled
+              );
 
-              case Loading:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-            }
-          },
-        ),
+            case Loading:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        },
       ),
     );
   }
@@ -110,7 +102,7 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 24),
-              child: _buildAvatar(widget.user),
+              child: Avatar(widget.user, 50),
             )
           ],
         ),
@@ -163,23 +155,22 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                     child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('Phone number',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
-                        )
+                      alignment: Alignment.centerLeft,
+                      child: Text('Phone number',
+                        style: TextStyle(fontSize: 14, color: Colors.black),
+                      )
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.user.phoneNumber == null
-                              || widget.user.phoneNumber.isEmpty
-                              ? 'Unknown'
-                              : widget.user.phoneNumber,
-                          style: TextStyle(fontSize: 14, color: Colors.black38),
-                        )
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        widget.user.phoneNumber == null || widget.user.phoneNumber.isEmpty
+                          ? 'Unknown'
+                          : widget.user.phoneNumber,
+                        style: TextStyle(fontSize: 14, color: Colors.black38),
+                      )
                     ),
                   )
                 ],
@@ -197,10 +188,10 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                       child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('Notification',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          )
+                        alignment: Alignment.centerLeft,
+                        child: Text('Notification',
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        )
                       ),
                     ),
                   ),
@@ -229,7 +220,9 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
         ),
         GestureDetector(
           onTap: () {
-            BlocProvider.of<ProfileBloc>(context).add(SignOut());
+            BlocProvider.of<ProfileBloc>(context).add(
+              SignOut()
+            );
           },
           child: Card(
             child: Padding(
@@ -242,28 +235,5 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
         )
       ],
     );
-  }
-
-  Widget _buildAvatar(User user) {
-    if (user.photoUrl != null) {
-      return CircleAvatar(
-        backgroundImage: NetworkImage(user.photoUrl), radius: 50,
-      );
-    } else {
-      return CircleAvatar(
-        child: Text(provideInitial(user)),
-        radius: 50,
-      );
-    }
-  }
-
-  String provideInitial(User user) {
-    if (user.displayName != null && user.displayName.isNotEmpty) {
-      return user.displayName[0];
-    } else if (user.email != null && user.email.isNotEmpty) {
-      return user.email[0];
-    } else {
-      return '';
-    }
   }
 }

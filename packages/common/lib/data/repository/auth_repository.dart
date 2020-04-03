@@ -99,7 +99,10 @@ class AuthRepository {
     await _triggerAuthChanges();
   }
 
-  Stream<AuthState> authState() => _authStateController.stream;
+  Stream<AuthState> authState() async* {
+    yield await currentState();
+    yield* _authStateController.stream;
+  }
 
   Future<User> getUser() async {
     final networkModel = await auth.currentUser();
@@ -113,6 +116,11 @@ class AuthRepository {
   }
 
   Future<void> _triggerAuthChanges() async {
+    final state = await currentState();
+    _authStateController.add(state);
+  }
+
+  Future<AuthState> currentState() async {
     final user = await getUser();
     AuthState state;
     if (user != null) {
@@ -120,6 +128,6 @@ class AuthRepository {
     } else {
       state  = Unauthenticated();
     }
-    _authStateController.add(state);
+    return state;
   }
 }
