@@ -49,6 +49,7 @@ class ProfileModel extends BaseModel<ViewState> {
         await _settingsRepository.disableNotification(_user.id);
         isNotificationsEnabled = false;
       }
+      notifyListeners();
     // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       state = ViewState.userLoaded;
