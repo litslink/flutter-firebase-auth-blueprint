@@ -128,3 +128,12 @@ analyzer:
     implicit-casts: false
     implicit-dynamic: false
 ```
+
+
+**Note:** In case you do not need some rules from the list which is provided by Effective dart you can simply disable some of them. Example:
+```yaml
+linter:
+  rules:
+    public_member_api_docs: false
+```
+
