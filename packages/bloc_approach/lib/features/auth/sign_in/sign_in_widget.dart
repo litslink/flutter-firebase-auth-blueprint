@@ -17,57 +17,60 @@ class SignInWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = Provider.of<AuthRepository>(context);
-    return Scaffold(
-      body: BlocProvider(
-        create: (_) => SignInBloc(authRepository),
-        child: BlocConsumer<SignInBloc, SignInState>(
-          listener: (context, state) {
-            switch (state.runtimeType) {
-              case Authenticated:
-                Navigator.of(context).popAndPushNamed(HomeWidget.route);
-                break;
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: Scaffold(
+        body: BlocProvider(
+          create: (_) => SignInBloc(authRepository),
+          child: BlocConsumer<SignInBloc, SignInState>(
+            listener: (context, state) {
+              switch (state.runtimeType) {
+                case Authenticated:
+                  Navigator.of(context).popAndPushNamed(HomeWidget.route);
+                  break;
 
-              case PhoneVerificationRedirect:
-                Navigator.of(context).popAndPushNamed(PhoneVerificationWidget.route);
-                break;
+                case PhoneVerificationRedirect:
+                  Navigator.of(context).pushNamed(PhoneVerificationWidget.route);
+                  break;
 
-              case ResetPasswordRedirect:
-                Navigator.of(context).pushNamed(PasswordResetWidget.route);
-                break;
+                case ResetPasswordRedirect:
+                  Navigator.of(context).pushNamed(PasswordResetWidget.route);
+                  break;
 
-              case CreateAccountRedirect:
-                Navigator.of(context).popAndPushNamed(SignUpWidget.route);
-                break;
+                case CreateAccountRedirect:
+                  Navigator.of(context).popAndPushNamed(SignUpWidget.route);
+                  break;
 
-              case AuthError:
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Something went wrong. Check your internet connection'
-                    ),
-                  )
-                );
-                break;
-            }
-          },
-          buildWhen: (_, state) => state is SignInForm || state is Loading,
-          // ignore: missing_return
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case SignInForm:
-                final formState = state as SignInForm;
-                return _buildSignInForm(
-                  context,
-                  formState.isEmailValid,
-                  formState.isPasswordValid
-                );
+                case AuthError:
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Something went wrong. Check your internet connection'
+                      ),
+                    )
+                  );
+                  break;
+              }
+            },
+            buildWhen: (_, state) => state is SignInForm || state is Loading,
+            // ignore: missing_return
+            builder: (context, state) {
+              switch (state.runtimeType) {
+                case SignInForm:
+                  final formState = state as SignInForm;
+                  return _buildSignInForm(
+                    context,
+                    formState.isEmailValid,
+                    formState.isPasswordValid
+                  );
 
-              case Loading:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-            }
-          },
+                case Loading:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+              }
+            },
+          ),
         ),
       ),
     );
@@ -75,103 +78,124 @@ class SignInWidget extends StatelessWidget {
 
   Widget _buildSignInForm(BuildContext context,
       bool isEmailValid, bool isPasswordValid) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: TextFormField(
-            maxLines: 1,
-            keyboardType: TextInputType.emailAddress,
-            autofocus: false,
-            decoration: InputDecoration(
-                hintText: 'Email',
-                icon: Icon(
-                  Icons.mail,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: isEmailValid
-                  ? null
-                  : 'Invalid email address'
-            ),
-            onChanged: (value) {
-              BlocProvider.of<SignInBloc>(context).add(
-                EmailChanged(value)
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-          child: TextFormField(
-            maxLines: 1,
-            obscureText: true,
-            autofocus: false,
-            decoration: InputDecoration(
-                hintText: 'Password',
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.grey,
-                ),
-                helperText: ' ',
-                errorText: isPasswordValid
-                  ? null
-                  : 'Password is too short'
-            ),
-            onChanged: (value) {
-              BlocProvider.of<SignInBloc>(context).add(
-                PasswordChanged(value)
-              );
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                  ),
-                  color: Colors.blue,
-                  child: Text('Sign in',
-                      style: TextStyle(fontSize: 16, color: Colors.white)
-                  ),
-                  onPressed: () {
-                    BlocProvider.of<SignInBloc>(context).add(SignIn());
-                  },
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 40),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Logo.',
+                  style: TextStyle(fontSize: 40),
                 ),
               ),
-            ],
-          ),
-        ),
-        _buildAdditionSignInMethod(context),
-        GestureDetector(
-          onTap: () {
-            BlocProvider.of<SignInBloc>(context).add(
-              CreateAccount()
-            );
-          },
-          child: Text('or create an account',
-              style: TextStyle(fontSize: 16, color: Colors.blue)
-          ),
-        ),
-        Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: () {
-                BlocProvider.of<SignInBloc>(context).add(
-                  ResetPassword()
-                );
-              },
-              child:Text('Forgot your password?',
-                  style: TextStyle(fontSize: 14, color: Colors.black38),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: TextFormField(
+                maxLines: 1,
+                keyboardType: TextInputType.emailAddress,
+                autofocus: false,
+                decoration: InputDecoration(
+                    hintText: 'Email',
+                    icon: Icon(
+                      Icons.mail,
+                      color: Colors.grey,
+                    ),
+                    helperText: ' ',
+                    errorText: isEmailValid
+                      ? null
+                      : 'Invalid email address'
+                ),
+                onChanged: (value) {
+                  BlocProvider.of<SignInBloc>(context).add(
+                    EmailChanged(value)
+                  );
+                },
               ),
-            )
-        )
-      ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+              child: TextFormField(
+                maxLines: 1,
+                obscureText: true,
+                autofocus: false,
+                decoration: InputDecoration(
+                    hintText: 'Password',
+                    icon: Icon(
+                      Icons.lock,
+                      color: Colors.grey,
+                    ),
+                    helperText: ' ',
+                    errorText: isPasswordValid
+                      ? null
+                      : 'Password is too short'
+                ),
+                onChanged: (value) {
+                  BlocProvider.of<SignInBloc>(context).add(
+                    PasswordChanged(value)
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 4),
+              child: GestureDetector(
+                onTap: () {
+                  BlocProvider.of<SignInBloc>(context).add(
+                    ResetPassword()
+                  );
+                },
+                child:Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot your password?',
+                    style: TextStyle(fontSize: 14, color: Colors.blue),
+                  ),
+                ),
+              )
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 12),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)
+                      ),
+                      color: Colors.blue,
+                      child: Text('Sign in',
+                          style: TextStyle(fontSize: 16, color: Colors.white)
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<SignInBloc>(context).add(SignIn());
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            _buildAdditionSignInMethod(context),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: GestureDetector(
+                onTap: () {
+                  BlocProvider.of<SignInBloc>(context).add(
+                    CreateAccount()
+                  );
+                },
+                child: Text('or create an account',
+                    style: TextStyle(fontSize: 16, color: Colors.blue)
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

@@ -40,74 +40,99 @@ class SignInWidget extends StatelessWidget {
   }
 
   Widget _buildSignInForm(BuildContext context, SignInModel model) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: TextFormField(
-            maxLines: 1,
-            keyboardType: TextInputType.emailAddress,
-            autofocus: false,
-            decoration: InputDecoration(
-              hintText: 'Email',
-              icon: Icon(
-                Icons.mail,
-                color: Colors.grey,
-              ),
-              helperText: ' ',
-              errorText: model.isEmailValid ? null : 'Invalid email address'),
-            onChanged: model.emailChanged,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-          child: TextFormField(
-            maxLines: 1,
-            obscureText: true,
-            autofocus: false,
-            decoration: InputDecoration(
-              hintText: 'Password',
-              icon: Icon(
-                Icons.lock,
-                color: Colors.grey,
-              ),
-              helperText: ' ',
-              errorText: model.isPasswordValid ? null : 'Password is too short'
-            ),
-            onChanged: model.passwordChanged,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                  color: Colors.blue,
-                  child: Text('Sign in',
-                    style: TextStyle(fontSize: 16, color: Colors.white)),
-                  onPressed: model.signIn,
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 40),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Logo.',
+                  style: TextStyle(fontSize: 40),
                 ),
               ),
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: TextFormField(
+                maxLines: 1,
+                keyboardType: TextInputType.emailAddress,
+                autofocus: false,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  icon: Icon(
+                    Icons.mail,
+                    color: Colors.grey,
+                  ),
+                  helperText: ' ',
+                  errorText: model.isEmailValid ? null : 'Invalid email address'),
+                onChanged: model.emailChanged,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+              child: TextFormField(
+                maxLines: 1,
+                obscureText: true,
+                autofocus: false,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.grey,
+                  ),
+                  helperText: ' ',
+                  errorText: model.isPasswordValid ? null : 'Password is too short'
+                ),
+                onChanged: model.passwordChanged,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 4),
+              child: GestureDetector(
+                onTap: model.resetPassword,
+                child:Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    'Forgot your password?',
+                    style: TextStyle(fontSize: 14, color: Colors.blue),
+                  ),
+                ),
+              )
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                      color: Colors.blue,
+                      child: Text('Sign in',
+                        style: TextStyle(fontSize: 16, color: Colors.white)),
+                      onPressed: model.signIn,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            _buildAdditionSignInMethod(context, model),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: GestureDetector(
+                onTap: model.signUp,
+                child: Text(
+                  'or create an account',
+                  style: TextStyle(fontSize: 16, color: Colors.blue)),
+              ),
+            ),
+          ],
         ),
-        _buildAdditionSignInMethod(context, model),
-        GestureDetector(
-          onTap: model.signUp,
-          child: Text('or create an account',
-              style: TextStyle(fontSize: 16, color: Colors.blue)),
-        ),
-        Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              onTap: model.resetPassword,
-              child: Text('Forgot your password?', style: TextStyle(fontSize: 14, color: Colors.black38)),
-            ))
-      ],
+      ),
     );
   }
 
