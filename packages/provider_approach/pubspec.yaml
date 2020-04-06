@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^4.0.4
-  image_picker: 0.6.3+4
+  image_picker: ^0.6.4
   flutter_firebase_auth_blueprint_common:
     path: ../common/
 
