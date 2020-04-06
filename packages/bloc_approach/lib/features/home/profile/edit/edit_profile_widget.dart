@@ -26,11 +26,13 @@ class _EditProfileState extends State<EditProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ModalRoute.of(context).settings.arguments as User;
-    final authRepository = Provider.of<AuthRepository>(context);
-    final imageLoader = Provider.of<ImageManager>(context);
     return BlocProvider(
-      create: (_) => EditProfileBloc(user, authRepository, imageLoader),
+      create: (_) {
+        final user = ModalRoute.of(context).settings.arguments as User;
+        final authRepository = Provider.of<AuthRepository>(context);
+        final imageLoader = Provider.of<ImageManager>(context);
+        return EditProfileBloc(user, authRepository, imageLoader);
+      },
       child: BlocConsumer<EditProfileBloc, EditProfileState>(
         listener: (_, state) {
           if (state is EditCompleted) {

@@ -35,39 +35,50 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final notesRepository = Provider.of<NotesRepository>(context);
-    final authRepository = Provider.of<AuthRepository>(context);
-    final settingsRepository = Provider.of<SettingsRepository>(context);
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => NotesBloc(notesRepository, authRepository),
-        ),
-        BlocProvider(
-          create: (_) => ProfileBloc(authRepository, settingsRepository),
-        ),
-        BlocProvider(
-          create: (_) => MiniProfileBloc(authRepository),
-        )
-      ],
-      child: Scaffold(
-        body: Center(
-          child: _getPage(_selectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.note),
-              title: Text('Notes'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) {
+              final notesRepository = Provider.of<NotesRepository>(context);
+              final authRepository = Provider.of<AuthRepository>(context);
+              return NotesBloc(notesRepository, authRepository);
+            },
+          ),
+          BlocProvider(
+            create: (_) {
+              final authRepository = Provider.of<AuthRepository>(context);
+              final settingsRepository = Provider.of<SettingsRepository>(context);
+              return ProfileBloc(authRepository, settingsRepository);
+            },
+          ),
+          BlocProvider(
+            create: (_) {
+              final authRepository = Provider.of<AuthRepository>(context);
+              return MiniProfileBloc(authRepository);
+            },
+          )
+        ],
+        child: Scaffold(
+          body: Center(
+            child: _getPage(_selectedIndex),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.note),
+                title: Text('Notes'),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profile'),
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue,
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );

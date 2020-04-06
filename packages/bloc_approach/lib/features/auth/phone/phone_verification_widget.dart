@@ -13,10 +13,12 @@ class PhoneVerificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = Provider.of<AuthRepository>(context);
     return Scaffold(
       body: BlocProvider(
-        create: (_) => PhoneVerificationBloc(authRepository),
+        create: (_) {
+          final authRepository = Provider.of<AuthRepository>(context);
+          return PhoneVerificationBloc(authRepository);
+        },
         child: BlocConsumer<PhoneVerificationBloc, PhoneVerificationState>(
           listener: (_, state) {
             switch (state.runtimeType) {

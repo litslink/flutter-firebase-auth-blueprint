@@ -16,12 +16,14 @@ class SignInWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = Provider.of<AuthRepository>(context);
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
         body: BlocProvider(
-          create: (_) => SignInBloc(authRepository),
+          create: (_) {
+            final authRepository = Provider.of<AuthRepository>(context);
+            return SignInBloc(authRepository);
+          },
           child: BlocConsumer<SignInBloc, SignInState>(
             listener: (context, state) {
               switch (state.runtimeType) {

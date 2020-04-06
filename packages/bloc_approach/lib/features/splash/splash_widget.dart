@@ -22,9 +22,12 @@ class SplashWidget extends StatelessWidget {
   }
 
   Widget _buildSplashListener(BuildContext context) {
-    final authRepository = Provider.of<AuthRepository>(context);
     return BlocProvider(
-      create: (_) => SplashBloc(authRepository)..add(CheckAuthentication()),
+      create: (_) {
+        final authRepository = Provider.of<AuthRepository>(context);
+        return SplashBloc(authRepository)
+          ..add(CheckAuthentication());
+      },
       child: BlocListener<SplashBloc, SplashState>(
         listener: (_, state) {
           if (state is Authenticated) {

@@ -15,7 +15,6 @@ class PasswordResetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authRepository = Provider.of<AuthRepository>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,7 +33,10 @@ class PasswordResetWidget extends StatelessWidget {
         ],
       ),
       body: BlocProvider(
-        create: (_) => PasswordResetBloc(authRepository),
+        create: (_) {
+          final authRepository = Provider.of<AuthRepository>(context);
+          return PasswordResetBloc(authRepository);
+        },
         child: BlocConsumer<PasswordResetBloc, PasswordResetState>(
           listener: (_, state) {
             if (state is AuthError) {
