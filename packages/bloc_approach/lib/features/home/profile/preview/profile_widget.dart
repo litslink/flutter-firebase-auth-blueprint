@@ -63,7 +63,8 @@ class ProfileWidget extends StatelessWidget {
           switch (state.runtimeType) {
             case ProfileInfo:
               final infoState = (state as ProfileInfo);
-              return _ProfileInfoWidget(
+              return _buildProfileInfo(
+                context,
                 infoState.user,
                 infoState.isNotificationEnabled
               );
@@ -77,24 +78,8 @@ class ProfileWidget extends StatelessWidget {
       ),
     );
   }
-}
 
-// ignore: must_be_immutable
-class _ProfileInfoWidget extends StatefulWidget {
-  final User user;
-  bool isNotificationEnabled;
-
-  // ignore: avoid_positional_boolean_parameters
-  _ProfileInfoWidget(this.user, this.isNotificationEnabled);
-
-  @override
-  State createState() => _ProfileInfoState();
-}
-
-class _ProfileInfoState extends State<_ProfileInfoWidget> {
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildProfileInfo(BuildContext context, User user, bool isNotificationEnabled) {
     return ListView(
       children: <Widget>[
         Row(
@@ -102,7 +87,7 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 24),
-              child: Avatar(widget.user, 50),
+              child: Avatar(user, 50),
             )
           ],
         ),
@@ -111,7 +96,7 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(widget.user.displayName ?? 'Unknown',
+              child: Text(user.displayName ?? 'Unknown',
                 style: TextStyle(fontSize: 24),
               ),
             )
@@ -126,19 +111,19 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                     child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text('Email',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
-                        )
+                      alignment: Alignment.centerLeft,
+                      child: Text('Email',
+                        style: TextStyle(fontSize: 14, color: Colors.black),
+                      )
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(widget.user.email ?? 'Unknown',
-                          style: TextStyle(fontSize: 14, color: Colors.black38),
-                        )
+                      alignment: Alignment.centerLeft,
+                      child: Text(user.email ?? 'Unknown',
+                        style: TextStyle(fontSize: 14, color: Colors.black38),
+                      )
                     ),
                   )
                 ],
@@ -166,9 +151,9 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.user.phoneNumber == null || widget.user.phoneNumber.isEmpty
+                        user.phoneNumber == null || user.phoneNumber.isEmpty
                           ? 'Unknown'
-                          : widget.user.phoneNumber,
+                          : user.phoneNumber,
                         style: TextStyle(fontSize: 14, color: Colors.black38),
                       )
                     ),
@@ -198,18 +183,14 @@ class _ProfileInfoState extends State<_ProfileInfoWidget> {
                   Padding(
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: Switch(
-                      value: widget.isNotificationEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          widget.isNotificationEnabled = !widget
-                              .isNotificationEnabled;
-                          final bloc = BlocProvider.of<ProfileBloc>(context);
-                          if (widget.isNotificationEnabled) {
-                            bloc.add(EnableNotification());
-                          } else {
-                            bloc.add(DisableNotification());
-                          }
-                        });
+                      value: isNotificationEnabled,
+                      onChanged: (_) {
+                        final bloc = BlocProvider.of<ProfileBloc>(context);
+                        if (isNotificationEnabled) {
+                          bloc.add(DisableNotification());
+                        } else {
+                          bloc.add(EnableNotification());
+                        }
                       },
                     ),
                   )

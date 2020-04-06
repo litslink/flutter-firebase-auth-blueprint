@@ -38,11 +38,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       case EnableNotification:
         final user = await _authRepository.getUser();
+        yield ProfileInfo(user, true);
         _settingsRepository.enableNotification(user.id);
         break;
 
       case DisableNotification:
         final user = await _authRepository.getUser();
+        yield ProfileInfo(user, false);
         _settingsRepository.disableNotification(user.id);
         break;
 
