@@ -36,9 +36,10 @@ class PasswordResetWidget extends StatelessWidget {
             appBar: AppBar(
               title: Text('Reset password'),
               automaticallyImplyLeading: false,
+              backgroundColor: Colors.white,
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(Icons.close),
+                  icon: Icon(Icons.close, color: Colors.black),
                   onPressed: model.cancel,
                 )
               ],

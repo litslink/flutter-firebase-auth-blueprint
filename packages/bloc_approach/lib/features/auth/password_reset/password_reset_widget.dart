@@ -18,11 +18,15 @@ class PasswordResetWidget extends StatelessWidget {
     final authRepository = Provider.of<AuthRepository>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset password'),
+        title: Text(
+          'Reset password',
+          style: TextStyle(fontSize: 18, color: Colors.black),
+        ),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.close),
+            icon: Icon(Icons.close, color: Colors.black),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -70,7 +74,6 @@ class PasswordResetWidget extends StatelessWidget {
     return Form(
       key: _emailFormKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
