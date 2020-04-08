@@ -1,4 +1,5 @@
 # Flutter/Dart/Pub related
+*.lock
 **/doc/api/
 .dart_tool/
 .flutter-plugins
@@ -7,6 +8,7 @@
 .pub-cache/
 .pub/
 /build/
+pubspec.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
