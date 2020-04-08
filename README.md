@@ -120,7 +120,7 @@ BlocProvider(
 * [**Google sign in**](https://pub.dev/packages/google_sign_in). It is an extension for the `firebase_auth` package from the library named above which provides ability to sign in using a Google account.
 
 ## Code style
-We use [Effective Dart](https://dart.dev/guides/language/effective-dart) rules options. Also we use special `string-mode` rules to avoid unexpected issues related to type casting.
+We use [Effective Dart](https://dart.dev/guides/language/effective-dart) rules options. Also we use special `strong-mode` rules to avoid unexpected issues related to type casting.
 ```yaml
 analyzer:
   exclude: [build/**]
