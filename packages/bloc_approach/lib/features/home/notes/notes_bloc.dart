@@ -26,6 +26,15 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
   Stream<NotesState> mapEventToState(NotesEvent event) async* {
     switch (event.runtimeType) {
       case NewNote:
+        final note = (event as NewNote).note;
+        try {
+          final userId = (await _authRepository.getUser()).id;
+          await _notesRepository.add(userId, note);
+        // ignore: avoid_catches_without_on_clauses
+        } catch (e) {
+          print(e);
+          yield Error();
+        }
         break;
 
       case DeleteNote:
@@ -33,12 +42,7 @@ class NotesBloc extends Bloc<NotesEvent, NotesState> {
         try {
           final userId = (await _authRepository.getUser()).id;
           await _notesRepository.delete(userId, note);
-
-          //TODO HOT FIX
-          if (state is Content && (state as Content).notes.length == 1) {
-            yield Empty();
-          }
-          // ignore: avoid_catches_without_on_clauses
+        // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           print(e);
           yield Error();
