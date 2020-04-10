@@ -8,7 +8,6 @@ import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repo
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
-
   final AuthRepository authRepository;
 
   SignInBloc(this.authRepository);

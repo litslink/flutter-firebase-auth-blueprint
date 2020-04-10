@@ -6,7 +6,6 @@ import 'package:flutter_firebase_auth_blueprint_common/data/repository/auth_repo
 import 'package:flutter_firebase_auth_blueprint_common/util/validation/validators.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-
   final AuthRepository authRepository;
 
   SignUpBloc(this.authRepository);
